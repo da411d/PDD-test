@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="HandheldFriendly" content="True">
+	<meta charset="UTF-8" >
+</head>
+<body>
+	<div id="top"></div>
+	<div id="sidebar">
+		<p>
+			Правильно: <span id="sidebar_true">0</span>
+		</p>
+		<p>
+			Не правильно: <span id="sidebar_false">0</span>
+		</p>
+		<p>
+			Вместе: <span id="sidebar_total">0</span>/<span id="sidebar_of">∞</span>
+		</p>
+		<a href="#done" onclick="PDTest.stop();this.className+=' hidden';" class="btn w100" id="donebtn">ЗАВЕРШИТЬ ТЕСТ</a>
+		<a href="#top" class="btn w100" id="donebtn">Вверх ⇑</a>
+		<a href="#bottom" class="btn w100" id="donebtn">Вниз ⇓</a>
+	</div>
+	<div id="panel" align="center">
+		<p>
+			Вариант:
+			<select id="abcd">
+				<option id="abcd_ab" value="AB">AB</option>
+				<option id="abcd_cd" value="CD">CD</option>
+			</select>
+		</p>
+		<p>
+			<a href="#exam" class="btn">Екзамен</a>
+			<a href="#bynum" class="btn">Билет по номеру</a>
+			<a href="#bythm" class="btn uc">Билет по теме</a>
+			<a href="#byN" class="btn">Каждый N-й вопрос</a>
+			<a href="#top100" class="btn">100 сложных</a>
+			<a href="#maraphon" class="btn">Марафон</a>
+		</p>
+		<div class="spoiler" id="exam">
+			<p>
+				Внимательно читайте каждый вопрос и все варианты ответов.<br>
+				Не торопитесь. Удачи!
+			</p>
+			<p>
+				<button onclick="PDTest.start(0, 0, document.getElementById('abcd').value);">ПОЧАТИ!</button>
+			</p>
+		</div>
+		<div class="spoiler" id="bynum">
+			<p>
+			Билет:
+				<select id="num">
+					<option selected disabled>Вопросов не найдено</option>
+				</select>
+			</p>
+			<p>
+				<button onclick="PDTest.start(1, document.getElementById('num').value, document.getElementById('abcd').value);">Начать!</button>
+			</p>
+		</div>
+		<div class="spoiler" id="bythm">
+			<p>
+			Тема:
+				<select id="thm">
+					<option selected disabled>Тем не найдено</option>
+				</select>
+			</p>
+			<p>
+				<button onclick="PDTest.start(2, document.getElementById('num').value, document.getElementById('abcd').value)">Начать!</button>
+			</p>
+		</div>
+		<div class="spoiler" id="byN">
+			<p>
+				Вопрос:
+				<select id="N">
+					<option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option>
+				</select>
+			</p>
+			<p>
+				<button onclick="PDTest.start(3, document.getElementById('N').value, document.getElementById('abcd').value)">Начать!</button>
+			</p>
+		</div>
+		<div class="spoiler" id="top100">
+			<p>
+				100 сложных вопросов
+			</p>
+			<p>
+				<button onclick="PDTest.start(4, document.getElementById('N').value-1, document.getElementById('abcd').value)">Начать!</button>
+			</p>
+		</div>
+		<div class="spoiler" id="maraphon">
+			<p>
+				Хочу все и сразу!
+			</p>
+			<p>
+				<button onclick="PDTest.start(5, document.getElementById('N').value-1, document.getElementById('abcd').value)">Начать!</button>
+			</p>
+		</div>
+	</div>
+	
+	<h1 id="h1"></h1>
+	<div id="test"></div>
+	
+	<div class="spoiler" id="done">
+		<p>
+			<b>Тест завершено!</b>
+		</p>
+		<p>
+			Твой результат:
+		</p>
+		<p>
+			<b>Правильно: </b><span id="done_true">0</span>
+		</p>
+		<p>
+			<b>Не правильно: </b><span id="done_false">0</span>
+		</p>
+		<p>
+			<b>Вместе: </b><span id="done_total">0</span>/<span id="done_of">0</span>
+		</p>
+	</div>
+	<div id="bottom"></div>
+</body>
+<script src='script.js'></script>
+</html>
