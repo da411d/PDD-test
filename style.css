@@ -12,7 +12,6 @@ body{
 	position:fixed;
 	left:16px;
 	bottom:16px;
-	//min-width:172px;
 	width: calc(50% - 375px - 32px);
 	padding:8px;
 	background: #ffffff;
@@ -114,9 +113,6 @@ select{
 	background: #fafafa;
 	box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
 	cursor: pointer;
-}
-#question #question_answers #question_answer[data-true=true]{
-	background: #fafffa;
 }
 #question.answered #question_answers #question_answer[data-true=true],
 #question.answered #question_answers #question_answer.true{
