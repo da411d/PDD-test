@@ -155,6 +155,7 @@ var PDTest = {
 				e.outerHTML = "";
 			}, 1000);
 		});
+		byId("h1").innerText = "Тест завершено!";
 		byId("done_true").innerText = PDTest.currentTest.stats.true;
 		byId("done_false").innerText = PDTest.currentTest.stats.false;
 		byId("done_total").innerText = PDTest.currentTest.stats.total;
