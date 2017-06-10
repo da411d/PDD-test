@@ -19,7 +19,7 @@
 		<p>
 			Вместе: <span id="sidebar_total">0</span>/<span id="sidebar_of">∞</span>
 		</p>
-		<a href="#done" onclick="PDTest.stop();this.className+=' hidden';" class="btn w100" id="donebtn">ЗАВЕРШИТЬ ТЕСТ</a>
+		<a onclick="PDTest.stop();" class="btn w100" id="donebtn">ЗАВЕРШИТЬ ТЕСТ</a>
 		<a href="#top" class="btn w100" id="donebtn">Вверх ⇑</a>
 		<a href="#bottom" class="btn w100" id="donebtn">Вниз ⇓</a>
 	</div>
@@ -27,73 +27,39 @@
 		<p>
 			Вариант:
 			<div class="select">
-				<button id="abcd_ab" onclick="PDTest.currentTest.set(this.innerText);" class="btn active">AB</option>
-				<button id="abcd_cd" onclick="PDTest.currentTest.set(this.innerText);" class="btn">CD</option>
+				<button id="abcd_ab" onclick="PDTest.currentTest.set(this.innerText);" name="abcd" class="btn select active">AB</button>
+				<button id="abcd_cd" onclick="PDTest.currentTest.set(this.innerText);" name="abcd" class="btn select">CD</button>
 			</div>
 		</p>
-		<p>
-			<a href="#exam" class="btn">Екзамен</a>
-			<a href="#bynum" class="btn">Билет по номеру</a>
-			<a href="#bythm" class="btn uc">Билет по теме</a>
-			<a href="#byN" class="btn">Каждый N-й вопрос</a>
-			<a href="#top100" class="btn">100 сложных</a>
-			<a href="#maraphon" class="btn">Марафон</a>
-		</p>
-		<div class="spoiler" id="exam">
-			<p>
-				Внимательно читайте каждый вопрос и все варианты ответов.<br>
-				Не торопитесь. Удачи!
-			</p>
-			<p>
-				<button onclick="PDTest.start(0, 0);">Начать!</button>
-			</p>
+		
+		<div>
+			<a name="category" class="btn select active trigger" onclick="PDTest.start(0, 0);">Экзамен</a>
+			<a href="#num" name="category" class="btn select trigger">Билет по номеру</a>
+			<a href="#bythm" name="category" class="btn select trigger uc">Билет по теме</a>
+			<a href="#byN" name="category" class="btn select trigger">Каждый N-й вопрос</a>
+			<a name="category" class="btn select trigger"  onclick="PDTest.start(4)">100 сложных</a>
+			<a name="category" class="btn select trigger"  onclick="PDTest.start(5)">Марафон</a>
 		</div>
-		<div class="spoiler" id="bynum">
-			<p>
-			Билет:
-				<div class="select" id="num">
-					Вопросов не найдено
-				</div>
-			</p>
+		
+		<div class="spoiler select" id="num">
+			Вопросов не найдено
 		</div>
 		<div class="spoiler" id="bythm">
 			<p>
 			Тема:
-				<select id="thm" multiple>
-					<option selected disabled>Тем не найдено</option>
-				</select>
+				<div class="select" id="thm">
+					Тем не найдено
+				</div>
 			</p>
 			<p>
 				<button onclick="PDTest.start(2, document.getElementById('num').value)">Начать!</button>
 			</p>
 		</div>
 		<div class="spoiler" id="byN">
-			<p>
-				Вопрос:
-				<div class="select" id="N" multiple>
-					<button onclick="PDTest.start(3, 1);" class="btn">1</button><button onclick="PDTest.start(3, 2);" class="btn">2</button><button onclick="PDTest.start(3, 3);" class="btn">3</button><button onclick="PDTest.start(3, 4);" class="btn">4</button><button onclick="PDTest.start(3, 5);" class="btn">5</button><button onclick="PDTest.start(3, 6);" class="btn">6</button><button onclick="PDTest.start(3, 7);" class="btn">7</button><button onclick="PDTest.start(3, 8);" class="btn">8</button><button onclick="PDTest.start(3, 9);" class="btn">9</button><button onclick="PDTest.start(3, 10);" class="btn">10</button><button onclick="PDTest.start(3, 11);" class="btn">11</button><button onclick="PDTest.start(3, 12);" class="btn">12</button><button onclick="PDTest.start(3, 13);" class="btn">13</button><button onclick="PDTest.start(3, 14);" class="btn">14</button><button onclick="PDTest.start(3, 15);" class="btn">15</button><button onclick="PDTest.start(3, 16);" class="btn">16</button><button onclick="PDTest.start(3, 17);" class="btn">17</button><button onclick="PDTest.start(3, 18);" class="btn">18</button><button onclick="PDTest.start(3, 19);" class="btn">19</button><button onclick="PDTest.start(3, 20);" class="btn">20</button>
-				</div>
-			</p>
-		</div>
-		<div class="spoiler" id="top100">
-			<p>
-				100 сложных вопросов
-			</p>
-			<p>
-				<button onclick="PDTest.start(4)">Начать!</button>
-			</p>
-		</div>
-		<div class="spoiler" id="maraphon">
-			<p>
-				Хочу все и сразу!
-			</p>
-			<p>
-				<button onclick="PDTest.start(5)">Начать!</button>
-			</p>
+			<button onclick="PDTest.start(3, 1);" class="btn select" name="menu2lvl">1</button><button onclick="PDTest.start(3, 2);" class="btn select" name="menu2lvl">2</button><button onclick="PDTest.start(3, 3);" class="btn select" name="menu2lvl">3</button><button onclick="PDTest.start(3, 4);" class="btn select" name="menu2lvl">4</button><button onclick="PDTest.start(3, 5);" class="btn select" name="menu2lvl">5</button><button onclick="PDTest.start(3, 6);" class="btn select" name="menu2lvl">6</button><button onclick="PDTest.start(3, 7);" class="btn select" name="menu2lvl">7</button><button onclick="PDTest.start(3, 8);" class="btn select" name="menu2lvl">8</button><button onclick="PDTest.start(3, 9);" class="btn select" name="menu2lvl">9</button><button onclick="PDTest.start(3, 10);" class="btn select" name="menu2lvl">10</button><button onclick="PDTest.start(3, 11);" class="btn select" name="menu2lvl">11</button><button onclick="PDTest.start(3, 12);" class="btn select" name="menu2lvl">12</button><button onclick="PDTest.start(3, 13);" class="btn select" name="menu2lvl">13</button><button onclick="PDTest.start(3, 14);" class="btn select" name="menu2lvl">14</button><button onclick="PDTest.start(3, 15);" class="btn select" name="menu2lvl">15</button><button onclick="PDTest.start(3, 16);" class="btn select" name="menu2lvl">16</button><button onclick="PDTest.start(3, 17);" class="btn select" name="menu2lvl">17</button><button onclick="PDTest.start(3, 18);" class="btn select" name="menu2lvl">18</button><button onclick="PDTest.start(3, 19);" class="btn select" name="menu2lvl">19</button><button onclick="PDTest.start(3, 20);" class="btn select" name="menu2lvl">20</button>
 		</div>
 	</div>
 	
-	<h1 id="h1"></h1>
 	<div id="test"></div>
 	
 	<div class="spoiler" id="done">

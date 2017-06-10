@@ -29,7 +29,7 @@ body{
 	overflow: hidden;
 	text-align:center;
 }
-.spoiler:target{
+.spoiler.active{
 	max-height: 350px;
 	padding: 4px 0;
 }
@@ -61,18 +61,11 @@ button.hidden, a.btn.hidden{
 	padding:0px;
 	margin:0px;
 }
-.select{
-	min-width:300px;
-	width:60%;
-	max-width:100%;
-	margin:auto;
-	text-align:center;
-}
-.select button, .select a.btn{
+button.select, a.btn.select{
 	min-width: 50px;
 	margin: 4px 2px;
 }
-
+button.r, a.btn.r{background: #ff8888;}
 #stats{
 	position:fixed;
 	right:0px;

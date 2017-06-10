@@ -50,11 +50,11 @@ var PDTest = {
 			PDTest.currentTest.AB = PDTest.currentTest.AB.concat(data);
 			PDTest.currentTest.set("AB");
 			
-			byId("num").innerHTML = '<button onclick="PDTest.start(1, -1);" class="btn">Случайный</button>';
 			var list = PDTest.currentTest[PDTest.currentTest.current];
+			byId("num").innerHTML = '<button onclick="PDTest.start(1, -1);" class="btn select active" name="menu2lvl">Случайный</button>';
 			for(l in list){
 				let i = l-0+1;
-				byId("num").innerHTML += '<button onclick="PDTest.start(1, '+i+');" class="btn">'+i+'</button>';
+				byId("num").innerHTML += '<button onclick="PDTest.start(1, '+i+');" class="btn select" name="menu2lvl">'+i+'</button>';
 			}
 			
 			//Зразу стартуєм
@@ -82,7 +82,6 @@ var PDTest = {
 	start: function(mode, n){
 		var currentTest = PDTest.currentTest.get();
 		if(!currentTest || currentTest.length == 0){
-			byId("h1").innerText = "Ошибка! Билеты не найдено!";
 			return;
 		}
 		var list = [];
@@ -93,17 +92,15 @@ var PDTest = {
 					var index = ~~(Math.random()*currentTest.length);
 					list.push(currentTest[index][i]);
 				}
-				byId("h1").innerText = "Екзамен";
 				break;
 				
 			case 1: //Білет по номеру
 				var index = n > 0 ? n-1 : ~~(Math.random()*currentTest.length);
 				list = currentTest[index];
-				byId("h1").innerText = "Билет №"+(index+1);
 				break;
 				
 			case 2: //Білет по темі
-				alert("Футкція в розробці");
+				alert("Функція в розробці");
 				break;
 				
 			case 3: //Кожне N-те
@@ -111,7 +108,6 @@ var PDTest = {
 				for(var i=0; i < currentTest.length; i++){
 					list.push(currentTest[i][n-1]);
 				}
-				byId("h1").innerText = "Каждый "+n+"-й вопрос";
 				break;
 				
 			case 4: //100 складних
@@ -122,7 +118,6 @@ var PDTest = {
 						}
 					}
 				}
-				byId("h1").innerText = "100 сложных";
 				break;
 				
 			case 5: //Марафон
@@ -132,7 +127,6 @@ var PDTest = {
 						list.push(currentTest[i][n]);
 					}
 				}
-				byId("h1").innerText = "Марафон";
 				break;
 		}
 		
@@ -144,6 +138,7 @@ var PDTest = {
 		
 		PDTest.currentTest.stats.init(list.length);
 		window.addEventListener("click", this.listener);
+		byId("done").classList = byId("done").classList.split(" active").join();
 		//window.location.hash = "";
 		console.log("THE TEST HAS STARTED");
 	},
@@ -159,11 +154,12 @@ var PDTest = {
 				e.outerHTML = "";
 			}, 1000);
 		});
-		byId("h1").innerText = "Тест завершено!";
+		PDTest.currentTest.stats.init(list.length);
 		byId("done_true").innerText = PDTest.currentTest.stats.true;
 		byId("done_false").innerText = PDTest.currentTest.stats.false;
 		byId("done_total").innerText = PDTest.currentTest.stats.total;
 		byId("done_of").innerText = PDTest.currentTest.stats.max;
+		byId("done").classList += " active";
 		console.log("THE TEST HAS STOPPED");
 	}, 
 	
@@ -239,6 +235,12 @@ var PDTest = {
 				byId("sidebar_false").innerText = this.false;
 				byId("sidebar_total").innerText = this.total;
 				byId("sidebar_of").innerText = this.max;
+				
+				if(this.finished){
+					setTimeout(function(){
+						PDTest.stop();
+					}, 1000);
+				}
 			}
 		}
 	}
@@ -296,8 +298,8 @@ function Question(data = ""){
 window.addEventListener("click", function(e){
 	var target = e.target;
 	
-	if(target.parentElement.className.indexOf("select") > -1){
-		target.parentElement.querySelectorAll(".btn").forEach(function(e){
+	if(target.className.indexOf("select") > -1){
+		document.getElementsByName(target.name).forEach(function(e){
 			e.className = e.className.split("active").join("");
 		});
 		target.className += " active";
@@ -306,10 +308,20 @@ window.addEventListener("click", function(e){
 	if(target.id.indexOf("abcd") == 0){
 		var list = PDTest.currentTest.get();
 		
-		byId("num").innerHTML = '<button onclick="PDTest.start(1, -1);" class="btn">Случайный</button>';
+		byId("num").innerHTML = '<button onclick="PDTest.start(1, -1);" class="btn select active" name="menu2lvl">Случайный</button>';
 		for(l in list){
 			let i = l-0+1;
-			byId("num").innerHTML += '<button onclick="PDTest.start(1, '+i+');" class="btn">'+i+'</button>';
+			byId("num").innerHTML += '<button onclick="PDTest.start(1, '+i+');" class="btn select" name="menu2lvl">'+i+'</button>';
+		}
+	}
+	
+	if(target.className.indexOf("trigger") > -1){
+		event.preventDefault();
+		document.querySelectorAll(".spoiler").forEach(function(e){
+			e.className = e.className.split(" active").join("");
+		});
+		if(target.href.split("#")[1] && byId(target.href.split("#")[1])){
+			byId(target.href.split("#")[1]).className += " active";
 		}
 	}
 });
