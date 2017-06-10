@@ -1,13 +1,10 @@
-//USEFUL FUNCTIONS
-if (!document.addEventListener) {document.addEventListener = function(a, b, c){document.attachEvent('on'+a, b, c);}}
-!function(a){var b=/iPhone/i,c=/iPod/i,d=/iPad/i,e=/(?=.*\bAndroid\b)(?=.*\bMobile\b)/i,f=/Android/i,g=/(?=.*\bAndroid\b)(?=.*\bSD4930UR\b)/i,h=/(?=.*\bAndroid\b)(?=.*\b(?:KFOT|KFTT|KFJWI|KFJWA|KFSOWI|KFTHWI|KFTHWA|KFAPWI|KFAPWA|KFARWI|KFASWI|KFSAWI|KFSAWA)\b)/i,i=/IEMobile/i,j=/(?=.*\bWindows\b)(?=.*\bARM\b)/i,k=/BlackBerry/i,l=/BB10/i,m=/Opera Mini/i,n=/(CriOS|Chrome)(?=.*\bMobile\b)/i,o=/(?=.*\bFirefox\b)(?=.*\bMobile\b)/i,p=new RegExp("(?:Nexus 7|BNTV250|Kindle Fire|Silk|GT-P1000)","i"),q=function(a,b){return a.test(b)},r=function(a){var r=a||navigator.userAgent,s=r.split("[FBAN");return"undefined"!=typeof s[1]&&(r=s[0]),this.apple={phone:q(b,r),ipod:q(c,r),tablet:!q(b,r)&&q(d,r),device:q(b,r)||q(c,r)||q(d,r)},this.amazon={phone:q(g,r),tablet:!q(g,r)&&q(h,r),device:q(g,r)||q(h,r)},this.android={phone:q(g,r)||q(e,r),tablet:!q(g,r)&&!q(e,r)&&(q(h,r)||q(f,r)),device:q(g,r)||q(h,r)||q(e,r)||q(f,r)},this.windows={phone:q(i,r),tablet:q(j,r),device:q(i,r)||q(j,r)},this.other={blackberry:q(k,r),blackberry10:q(l,r),opera:q(m,r),firefox:q(o,r),chrome:q(n,r),device:q(k,r)||q(l,r)||q(m,r)||q(o,r)||q(n,r)},this.seven_inch=q(p,r),this.any=this.apple.device||this.android.device||this.windows.device||this.other.device||this.seven_inch,this.phone=this.apple.phone||this.android.phone||this.windows.phone,this.tablet=this.apple.tablet||this.android.tablet||this.windows.tablet,"undefined"==typeof window?this:void 0},s=function(){var a=new r;return a.Class=r,a};"undefined"!=typeof module&&module.exports&&"undefined"==typeof window?module.exports=r:"undefined"!=typeof module&&module.exports&&"undefined"!=typeof window?module.exports=s():"function"==typeof define&&define.amd?define("isMobile",[],a.isMobile=s()):a.isMobile=s()}(this);
+﻿//USEFUL FUNCTIONS
 function rand(mi, ma){return Math.floor(Math.random() * (ma - mi + 1) + mi);}
 function randId(){return (new Date()-0).toString(36).replace(/[^a-z]+/g, "").substr(0,8) + "_" +rand(1000000, 9999999);}
-function parseUrl(a){var b=document.createElement("a");return b.href=a,b}
 function getScrollTop(){var o=0;return'number'==typeof window.pageYOffset?o=window.pageYOffset:document.body&&document.body.scrollTop?o=document.body.scrollTop:document.documentElement&&(document.documentElement.scrollLeft||document.documentElement.scrollTop)&&(o=document.documentElement.scrollTop),o}
 function setScrollTop(o){window.scrollTo(0,o)}
-function hex2bin(a){for(var b=[],d=0;d<a.length-1;d+=2)b.push(parseInt(a.substr(d,2),16));return String.fromCharCode.apply(String,b)}
 function byId(id){return document.getElementById(id);}
+function shuffle(t){for(var i=0;i<t.length;i++)t.sort(function(){return Math.random()<.5});return t};
 
 function connect(u, f, p){
 	t = (u+"").toString();
@@ -51,12 +48,17 @@ var PDTest = {
 				}
 			}
 			PDTest.currentTest.AB = PDTest.currentTest.AB.concat(data);
+			PDTest.currentTest.set("AB");
 			
-			byId("num").innerHTML = '<option value="-1">Случайный</option>';
+			byId("num").innerHTML = '<button onclick="PDTest.start(1, -1);" class="btn">Случайный</button>';
 			var list = PDTest.currentTest[PDTest.currentTest.current];
 			for(l in list){
-				byId("num").innerHTML += '<option value="'+(l-0+1)+'">'+(l-0+1)+'</option>';
+				let i = l-0+1;
+				byId("num").innerHTML += '<button onclick="PDTest.start(1, '+i+');" class="btn">'+i+'</button>';
 			}
+			
+			//Зразу стартуєм
+			PDTest.start(0, 0);
 		});
 		connect(DIR+"?_=cd", function(data){
 			if(data == "%404%"){
@@ -77,7 +79,7 @@ var PDTest = {
 	/*
 		START: Починаєм тест
 	*/
-	start: function(mode, n, abcd){
+	start: function(mode, n){
 		var currentTest = PDTest.currentTest.get();
 		if(!currentTest || currentTest.length == 0){
 			byId("h1").innerText = "Ошибка! Билеты не найдено!";
@@ -134,13 +136,14 @@ var PDTest = {
 		}
 		
 		byId("test").innerHTML = "";
+		list = shuffle(list);
 		for(var i=0; i<list.length; i++){
 			byId("test").appendChild(list[i].toHTML());
 		}
 		
 		PDTest.currentTest.stats.init(list.length);
 		window.addEventListener("click", this.listener);
-		window.location.hash = "";
+		//window.location.hash = "";
 		console.log("THE TEST HAS STARTED");
 	},
 	
@@ -196,12 +199,14 @@ var PDTest = {
 		currentTest: Ще має бути тест BC, але тут треба щось зробити.. Може генерувати все на стороні сервера
 	*/
 	currentTest: {
-		current: "AB",
+		current: false,
 		AB: [],
 		CD: [],
 		get: function(){
-			PDTest.currentTest.current = byId("abcd").value || false;
-			return PDTest.currentTest[this.current] || PDTest.currentTest.AB;
+			return this[this.current] || this.AB;
+		},
+		set: function(a){
+			this.current = a||false;
 		},
 		stats:{
 			true: 0,
@@ -287,14 +292,23 @@ function Question(data = ""){
 	}
 }
 
-window.addEventListener("change", function(e){
-	var el = e.target;
-	if(el.id == "abcd"){
+window.addEventListener("click", function(e){
+	var target = e.target;
+	
+	if(target.parentElement.className.indexOf("select") > -1){
+		target.parentElement.querySelectorAll(".btn").forEach(function(e){
+			e.className = e.className.split("active").join("");
+		});
+		target.className += " active";
+	}
+	
+	if(target.id.indexOf("abcd") == 0){
 		var list = PDTest.currentTest.get();
 		
-		byId("num").innerHTML = '<option value="-1">Случайный</option>';
+		byId("num").innerHTML = '<button onclick="PDTest.start(1, -1);" class="btn">Случайный</button>';
 		for(l in list){
-			byId("num").innerHTML += '<option value="'+(l-0+1)+'">'+(l-0+1)+'</option>';
+			let i = l-0+1;
+			byId("num").innerHTML += '<button onclick="PDTest.start(1, '+i+');" class="btn">'+i+'</button>';
 		}
 	}
 });

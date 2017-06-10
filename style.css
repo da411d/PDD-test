@@ -30,9 +30,10 @@ body{
 	text-align:center;
 }
 .spoiler:target{
-	max-height: 200px;
+	max-height: 350px;
 	padding: 4px 0;
 }
+
 
 button, a.btn{
 	display:inline-block;
@@ -51,16 +52,27 @@ button.w100, a.btn.w100{
 	min-width:0px;
 	width:calc(100% - 16px);
 }
+button.active, a.btn.active{
+	background: #4444ff;
+	box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6);
+}
 button.hidden, a.btn.hidden{
 	max-height:0px;
 	padding:0px;
 	margin:0px;
 }
-select{
-	display:inline-block;
-	margin: 0 8px;
-	padding: 8px;
+.select{
+	min-width:300px;
+	width:60%;
+	max-width:100%;
+	margin:auto;
+	text-align:center;
 }
+.select button, .select a.btn{
+	min-width: 50px;
+	margin: 4px 2px;
+}
+
 #stats{
 	position:fixed;
 	right:0px;
