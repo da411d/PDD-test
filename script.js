@@ -122,6 +122,7 @@ var PDTest = {
 						}
 					}
 				}
+				byId("h1").innerText = "100 сложных";
 				break;
 				
 			case 5: //Марафон
