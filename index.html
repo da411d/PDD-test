@@ -8,30 +8,15 @@
 	<meta charset="UTF-8" >
 </head>
 <body>
-	<div id="top"></div>
-	<div id="sidebar">
-		<p>
-			Правильно: <span id="sidebar_true">0</span>
-		</p>
-		<p>
-			Не правильно: <span id="sidebar_false">0</span>
-		</p>
-		<p>
-			Вместе: <span id="sidebar_total">0</span>/<span id="sidebar_of">∞</span>
-		</p>
-		<a onclick="PDTest.stop();" class="btn w100" id="donebtn">ЗАВЕРШИТЬ ТЕСТ</a>
-	</div>
 	<div id="panel" align="center">
-		<p>
-			<button id="abcd_ab" onclick="PDTest.currentTest.set(this.innerText);" name="abcd" class="btn select active">AB</button>
-			<button id="abcd_cd" onclick="PDTest.currentTest.set(this.innerText);" name="abcd" class="btn select">CD</button>
-		</p>
-		
 		<div>
+			<button id="abcd_ab" onclick="PDTest.currentTest.set(this.innerText);" name="abcd" class="btn g select active">AB</button>
+			<button id="abcd_cd" onclick="PDTest.currentTest.set(this.innerText);" name="abcd" class="btn g select">CD</button>
+			<span id="separator"></span>
 			<a name="category" class="btn select active trigger" onclick="PDTest.start(0, 0);">Экзамен</a>
 			<a href="#num" name="category" class="btn select trigger">Билет по номеру</a>
-			<a href="#bythm" name="category" class="btn select trigger uc">Билет по теме</a>
-			<a href="#byN" name="category" class="btn select trigger">Каждый N-й вопрос</a>
+			<a href="#thm" name="category" class="btn select trigger uc">Билет по теме</a>
+			<a href="#N" name="category" class="btn select trigger">Каждый N-й вопрос</a>
 			<a name="category" class="btn select trigger"  onclick="PDTest.start(4)">100 сложных</a>
 			<a name="category" class="btn select trigger"  onclick="PDTest.start(5)">Марафон</a>
 		</div>
@@ -39,18 +24,11 @@
 		<div class="spoiler select" id="num">
 			Вопросов не найдено
 		</div>
-		<div class="spoiler" id="bythm">
-			<p>
-			Тема:
-				<div class="select" id="thm">
-					Тем не найдено
-				</div>
-			</p>
-			<p>
-				<button onclick="PDTest.start(2, document.getElementById('num').value)">Начать!</button>
-			</p>
+		<div class="spoiler" id="thm">
+			Тем не найдено
+			<button onclick="PDTest.start(2, document.getElementById('num').value)">Начать!</button>
 		</div>
-		<div class="spoiler" id="byN">
+		<div class="spoiler" id="N">
 			<button onclick="PDTest.start(3, 1);" class="btn select" name="menu2lvl">1</button><button onclick="PDTest.start(3, 2);" class="btn select" name="menu2lvl">2</button><button onclick="PDTest.start(3, 3);" class="btn select" name="menu2lvl">3</button><button onclick="PDTest.start(3, 4);" class="btn select" name="menu2lvl">4</button><button onclick="PDTest.start(3, 5);" class="btn select" name="menu2lvl">5</button><button onclick="PDTest.start(3, 6);" class="btn select" name="menu2lvl">6</button><button onclick="PDTest.start(3, 7);" class="btn select" name="menu2lvl">7</button><button onclick="PDTest.start(3, 8);" class="btn select" name="menu2lvl">8</button><button onclick="PDTest.start(3, 9);" class="btn select" name="menu2lvl">9</button><button onclick="PDTest.start(3, 10);" class="btn select" name="menu2lvl">10</button><button onclick="PDTest.start(3, 11);" class="btn select" name="menu2lvl">11</button><button onclick="PDTest.start(3, 12);" class="btn select" name="menu2lvl">12</button><button onclick="PDTest.start(3, 13);" class="btn select" name="menu2lvl">13</button><button onclick="PDTest.start(3, 14);" class="btn select" name="menu2lvl">14</button><button onclick="PDTest.start(3, 15);" class="btn select" name="menu2lvl">15</button><button onclick="PDTest.start(3, 16);" class="btn select" name="menu2lvl">16</button><button onclick="PDTest.start(3, 17);" class="btn select" name="menu2lvl">17</button><button onclick="PDTest.start(3, 18);" class="btn select" name="menu2lvl">18</button><button onclick="PDTest.start(3, 19);" class="btn select" name="menu2lvl">19</button><button onclick="PDTest.start(3, 20);" class="btn select" name="menu2lvl">20</button>
 		</div>
 	</div>
@@ -71,10 +49,20 @@
 			<b>Вместе: </b><span id="done_total">0</span>/<span id="done_of">0</span>
 		</p>
 		<p >
-			<a name="category" class="btn select active trigger" onclick="PDTest.start(PDTest.mode, PDTest.startparam);">Пройти заново</a>
+			<a class="btn select trigger" onclick="PDTest.start(PDTest.mode, PDTest.startparam);">Пройти заново</a>
 		</p>
 	</div>
-	<div id="bottom"></div>
+	<div id="sidebar">
+		<div>
+			Правильно: <span id="sidebar_true">0</span><br>
+			Не правильно: <span id="sidebar_false">0</span><br>
+			Вместе: <span id="sidebar_total">0</span>/<span id="sidebar_of">∞</span>
+		</div>
+		<div>
+			<a onclick="PDTest.stop();" class="btn" id="donebtn">ЗАВЕРШИТЬ ТЕСТ</a><br>
+			<a class="btn trigger" onclick="PDTest.start(PDTest.mode, PDTest.startparam);">НАЧАТЬ ЗАНОВО</a>
+		</div>
+	</div>
 </body>
 <script src='script.js'></script>
 </html>
