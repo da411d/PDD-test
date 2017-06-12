@@ -149,6 +149,15 @@ var PDTest = {
 	},
 	
 	/*
+		RESTART: Перезапускаєм тест
+	*/
+	restart: function(mode, n){
+		PDTest.stop();
+		PDTest.start(PDTest.mode, PDTest.startparam);
+		log("RESTART: "+PDTest.mode+" "+PDTest.startparam);
+	},
+	
+	/*
 		STOP: Завершуємо тест. Знімаєм всі лістенери, ще щось тут буде..
 	*/
 	stop: function(){
@@ -157,9 +166,6 @@ var PDTest = {
 		byId("testnav").innerHTML = "";
 		document.querySelectorAll("#question").forEach(function(e){
 			e.className += " hidden";
-			setTimeout(function(){
-				e.outerHTML = "";
-			}, 1000);
 		});
 		
 		//Виводим
@@ -260,6 +266,7 @@ var PDTest = {
 		},
 		set: function(a){
 			this.current = a||false;
+			PDTest.restart();
 		},
 		stats:{
 			true: 0,
