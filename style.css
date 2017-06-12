@@ -4,7 +4,7 @@ body{
 }
 * {
 	transition-duration: 0.4s;
-	transition-property: width,height,max-height,box-shadow,text-shadow,border,background,top,left,right,bottom,opacity;
+	transition-property: width,height,max-height,box-shadow,text-shadow,border,background,top,left,right,bottom,opacity,transform;
 	outline: none;
 	box-sizing: border-box;
 }
@@ -18,10 +18,6 @@ body{
 	box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.5);
 }
 
-.uc{
-	filter:blur(2px);
-	opacity: 0.7;
-}
 .spoiler{
 	max-height:0px;
 	margin: 0px auto;
@@ -65,7 +61,11 @@ button.select, a.btn.select{
 	min-width: 50px;
 	margin: 4px 2px;
 }
+button.w, a.btn.w{background: #ffffff;color:#000000;}
+button.d, a.btn.d{background: #eeeeee;color:#000000;}
 button.r, a.btn.r{background: #ff8888;}
+button.g, a.btn.g{background: #88ff88;}
+
 #stats{
 	position:fixed;
 	right:0px;
@@ -73,20 +73,27 @@ button.r, a.btn.r{background: #ff8888;}
 #h1{
 	text-align:center;
 }
-#question{
+#test{
+	position:relative;
 	display:block;
 	width:750px;
 	max-width:100%;
 	margin: 16px auto;
+}
+#question{
+	position:absolute;
+	margin: 16px;
 	padding: 16px;
 	box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
 	overflow:hidden;
 	max-height:1000px;
+	opacity: 1;
+	transform: translateY(0px);
 }
 #question.hidden{
-	max-height:0px;
-	margin: 0px auto;
-	padding: 0px;
+	opacity: 0;
+	transform: translateY(50px);
+	pointer-events: none;
 }
 #question.answered.true{
 	background: #ddffdd;

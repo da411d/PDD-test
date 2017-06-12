@@ -20,16 +20,11 @@
 			Вместе: <span id="sidebar_total">0</span>/<span id="sidebar_of">∞</span>
 		</p>
 		<a onclick="PDTest.stop();" class="btn w100" id="donebtn">ЗАВЕРШИТЬ ТЕСТ</a>
-		<a href="#top" class="btn w100" id="donebtn">Вверх ⇑</a>
-		<a href="#bottom" class="btn w100" id="donebtn">Вниз ⇓</a>
 	</div>
 	<div id="panel" align="center">
 		<p>
-			Вариант:
-			<div class="select">
-				<button id="abcd_ab" onclick="PDTest.currentTest.set(this.innerText);" name="abcd" class="btn select active">AB</button>
-				<button id="abcd_cd" onclick="PDTest.currentTest.set(this.innerText);" name="abcd" class="btn select">CD</button>
-			</div>
+			<button id="abcd_ab" onclick="PDTest.currentTest.set(this.innerText);" name="abcd" class="btn select active">AB</button>
+			<button id="abcd_cd" onclick="PDTest.currentTest.set(this.innerText);" name="abcd" class="btn select">CD</button>
 		</p>
 		
 		<div>
@@ -59,7 +54,7 @@
 			<button onclick="PDTest.start(3, 1);" class="btn select" name="menu2lvl">1</button><button onclick="PDTest.start(3, 2);" class="btn select" name="menu2lvl">2</button><button onclick="PDTest.start(3, 3);" class="btn select" name="menu2lvl">3</button><button onclick="PDTest.start(3, 4);" class="btn select" name="menu2lvl">4</button><button onclick="PDTest.start(3, 5);" class="btn select" name="menu2lvl">5</button><button onclick="PDTest.start(3, 6);" class="btn select" name="menu2lvl">6</button><button onclick="PDTest.start(3, 7);" class="btn select" name="menu2lvl">7</button><button onclick="PDTest.start(3, 8);" class="btn select" name="menu2lvl">8</button><button onclick="PDTest.start(3, 9);" class="btn select" name="menu2lvl">9</button><button onclick="PDTest.start(3, 10);" class="btn select" name="menu2lvl">10</button><button onclick="PDTest.start(3, 11);" class="btn select" name="menu2lvl">11</button><button onclick="PDTest.start(3, 12);" class="btn select" name="menu2lvl">12</button><button onclick="PDTest.start(3, 13);" class="btn select" name="menu2lvl">13</button><button onclick="PDTest.start(3, 14);" class="btn select" name="menu2lvl">14</button><button onclick="PDTest.start(3, 15);" class="btn select" name="menu2lvl">15</button><button onclick="PDTest.start(3, 16);" class="btn select" name="menu2lvl">16</button><button onclick="PDTest.start(3, 17);" class="btn select" name="menu2lvl">17</button><button onclick="PDTest.start(3, 18);" class="btn select" name="menu2lvl">18</button><button onclick="PDTest.start(3, 19);" class="btn select" name="menu2lvl">19</button><button onclick="PDTest.start(3, 20);" class="btn select" name="menu2lvl">20</button>
 		</div>
 	</div>
-	
+	<div id="testnav"></div>
 	<div id="test"></div>
 	
 	<div class="spoiler" id="done">
@@ -74,6 +69,9 @@
 		</p>
 		<p>
 			<b>Вместе: </b><span id="done_total">0</span>/<span id="done_of">0</span>
+		</p>
+		<p >
+			<a name="category" class="btn select active trigger" onclick="PDTest.start(PDTest.mode, PDTest.startparam);">Пройти заново</a>
 		</p>
 	</div>
 	<div id="bottom"></div>

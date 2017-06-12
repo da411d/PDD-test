@@ -5,7 +5,7 @@ function getScrollTop(){var o=0;return'number'==typeof window.pageYOffset?o=wind
 function setScrollTop(o){window.scrollTo(0,o)}
 function byId(id){return document.getElementById(id);}
 function shuffle(t){for(var i=0;i<t.length;i++)t.sort(function(){return Math.random()<.5});return t};
-
+function log(t){var d = new Date();console.log(d.toLocaleDateString()+" "+d.toLocaleTimeString()+"> ", t);}
 function connect(u, f, p){
 	t = (u+"").toString();
 	if (t.match(/\?/)) {
@@ -20,7 +20,7 @@ function connect(u, f, p){
 		var xhr = e.target;
 		if (xhr.readyState != 4) return;
 		if (xhr.status != 200) {
-			console.log(xhr.status + ': ' + xhr.statusText);
+			log(xhr.status + ': ' + xhr.statusText);
 			return;
 		}
 		var data = xhr.responseText;
@@ -80,6 +80,8 @@ var PDTest = {
 		START: Починаєм тест
 	*/
 	start: function(mode, n){
+		PDTest.mode = mode;
+		PDTest.startparam = n;
 		var currentTest = PDTest.currentTest.get();
 		if(!currentTest || currentTest.length == 0){
 			return;
@@ -130,38 +132,73 @@ var PDTest = {
 				break;
 		}
 		
-		byId("test").innerHTML = "";
 		list = shuffle(list);
+		var testHTML = "";
+		var testnavHTML = ""
 		for(var i=0; i<list.length; i++){
-			byId("test").appendChild(list[i].toHTML());
+			testHTML += list[i].toHTML(i);
+			testnavHTML += '<button onclick="trigCard('+(i+1)+')" name="testnav" class="btn select w">'+(i+1)+'</button>';
 		}
+		byId("test").innerHTML = testHTML;
+		byId("testnav").innerHTML = testnavHTML;
 		
 		PDTest.currentTest.stats.init(list.length);
 		window.addEventListener("click", this.listener);
-		byId("done").classList = byId("done").classList.split(" active").join();
-		//window.location.hash = "";
-		console.log("THE TEST HAS STARTED");
+		byId("done").className = byId("done").className.split(" active").join("");
+		log("THE TEST HAS STARTED");
 	},
 	
 	/*
 		STOP: Завершуємо тест. Знімаєм всі лістенери, ще щось тут буде..
 	*/
 	stop: function(){
+		//Обнуляєм
 		window.removeEventListener("click", this.listener);
+		byId("testnav").innerHTML = "";
 		document.querySelectorAll("#question").forEach(function(e){
 			e.className += " hidden";
 			setTimeout(function(){
 				e.outerHTML = "";
 			}, 1000);
 		});
-		PDTest.currentTest.stats.init(list.length);
+		
+		//Виводим
 		byId("done_true").innerText = PDTest.currentTest.stats.true;
 		byId("done_false").innerText = PDTest.currentTest.stats.false;
 		byId("done_total").innerText = PDTest.currentTest.stats.total;
 		byId("done_of").innerText = PDTest.currentTest.stats.max;
 		byId("done").classList += " active";
-		console.log("THE TEST HAS STOPPED");
+		log("THE TEST HAS STOPPED");
 	}, 
+	
+	/*
+		ADD
+	*/
+	add: function(current, n){
+		var currentTest = PDTest.currentTest.get();
+		if(!currentTest || currentTest.length == 0){
+			return;
+		}
+		var list = [];
+		
+		for(var i=0; i < n; i++){
+			var index = ~~(Math.random()*currentTest.length);
+			list.push(currentTest[index][current-1]);
+			console.log(index, current-1);
+		}
+		var testHTML = "";
+		var testnavHTML = ""
+		for(var i=0; i<list.length; i++){
+			var m = PDTest.currentTest.stats.max+i+1;
+			testHTML += list[i].toHTML(m-1, 1);
+			testnavHTML += '<button onclick="trigCard('+m+')" name="testnav" class="btn select d">'+m+'</button>';
+		}
+		byId("test").innerHTML += testHTML;
+		byId("testnav").innerHTML += testnavHTML;
+		
+		PDTest.currentTest.stats.max += n;
+		log("ADDED "+n+" QUESTIONS");
+	},
 	
 	/*
 		LISTENER: Він обробляє всі події
@@ -177,17 +214,32 @@ var PDTest = {
 		
 		if(target.id == "question_answer" && root.className.indexOf("answered")==-1){
 			root.className = "answered";
-			if(target.getAttribute("data-true") == "true"){//Правильна відповідь
-				root.className += " true";
-				target.className += " true";
-				PDTest.currentTest.stats.add(1);
-			}else{
-				root.className += " false";
-				target.className += " false";
-				PDTest.currentTest.stats.add(0);
-			}
+			var status = target.getAttribute("data-true") == "true";
+			root.className += status ? " true" : " false";
+			target.className += status ? " true" : " false";
+			PDTest.currentTest.stats.add(status);
+			document.querySelector("#testnav button:nth-of-type("+root.getAttribute("data-n")+")").className += status ? " g" : " r";
 			if(PDTest.currentTest.stats.finished){
 				byId("donebtn").className = byId("donebtn").className.split("hidden").join("");
+			}
+			setTimeout(function(){
+				var n = root.getAttribute("data-n")-0+1;
+				if(n >= PDTest.currentTest.stats.max)return;
+				trigCard(n);
+				document.querySelector("#testnav button:nth-of-type("+n+")").className += " active";
+			}, 1000);
+			
+			
+			if(status == false){
+				if(PDTest.mode == 0){
+					if(root.getAttribute("data-exam") == "true" || PDTest.currentTest.stats.false >= 3){
+						PDTest.stop(false);
+						return;
+					}
+					
+					PDTest.add(root.getAttribute("data-n"), 5);
+				}
+
 			}
 		}
 	},
@@ -199,6 +251,8 @@ var PDTest = {
 		current: false,
 		AB: [],
 		CD: [],
+		mode: 0,
+		startparam: 0,
 		get: function(){
 			return this[this.current] || this.AB;
 		},
@@ -228,6 +282,7 @@ var PDTest = {
 				this.false = 0;
 				this.total = 0;
 				this.max = n;
+				this.finished = false;
 				this.render();
 			},
 			render: function(){
@@ -258,9 +313,13 @@ function Question(data = ""){
 		image: data.image||"",
 		difficult: data.difficult||"",
 		
-		toHTML: function(){
+		toHTML: function(i = 0, isExam=false){
+			var wr = document.createElement("div");
 			var container = document.createElement("div");
 			container.id = "question";
+			container.className = !!i ? " hidden" : "";
+			container.setAttribute("data-n", i+1);
+			if(isExam)container.setAttribute("data-exam", "true");
 				var image = document.createElement("img");
 				image.src = DIR+this.image;
 				image.id = "question_image";
@@ -290,7 +349,8 @@ function Question(data = ""){
 				tip.id = "question_tip";
 				tip.className = "hidden";
 				container.appendChild(tip);
-			return container;
+			wr.appendChild(container);
+			return wr.innerHTML;
 		}
 	}
 }
@@ -300,7 +360,7 @@ window.addEventListener("click", function(e){
 	
 	if(target.className.indexOf("select") > -1){
 		document.getElementsByName(target.name).forEach(function(e){
-			e.className = e.className.split("active").join("");
+			e.className = e.className.split("active").join("").split("  ").join(" ");
 		});
 		target.className += " active";
 	}
@@ -325,3 +385,12 @@ window.addEventListener("click", function(e){
 		}
 	}
 });
+
+function trigCard(i){
+	document.querySelectorAll("#test #question").forEach(function(e){
+		e.className = e.className.split(" hidden").join("") + " hidden";
+	});
+	document.querySelectorAll("#test #question:nth-of-type("+i+")").forEach(function(e){
+		e.className = e.className.split(" hidden").join("");
+	});
+}
