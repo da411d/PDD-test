@@ -184,7 +184,6 @@ var PDTest = {
 		for(var i=0; i < n; i++){
 			var index = ~~(Math.random()*currentTest.length);
 			list.push(currentTest[index][current-1]);
-			console.log(index, current-1);
 		}
 		var testHTML = "";
 		var testnavHTML = ""
@@ -212,7 +211,10 @@ var PDTest = {
 			root = root.parentElement;
 		}
 		
-		if(target.id == "question_answer" && root.className.indexOf("answered")==-1){
+		if(target.id == "question_answer"){
+			if(PDTest.mode == 0 && root.className.indexOf("answered")!=-1)return;
+			
+			
 			root.className = "answered";
 			var status = target.getAttribute("data-true") == "true";
 			root.className += status ? " true" : " false";
