@@ -265,7 +265,7 @@ var PDTest = {
 			if(PDTest.settings.get("autoContinue") == "true"){
 				setTimeout(function(){
 					var n = root.getAttribute("data-n")-0+1;
-					if(n >= PDTest.currentTest.answers.max || PDTest.currentTest.answers.finished)return;
+					if(n > PDTest.currentTest.answers.max || PDTest.currentTest.answers.finished)return;
 					trigCard(n);
 					document.querySelectorAll("#testnav button").forEach(function(e){
 						e.classList.remove("active");
