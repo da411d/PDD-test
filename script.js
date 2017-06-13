@@ -97,9 +97,9 @@ var PDTest = {
 	/*
 		START: Починаєм тест
 	*/
-	start: function(mode, n){
-		PDTest.mode = mode;
-		PDTest.startparam = n;
+	start: function(mode, n=0){
+		PDTest.currentTest.mode = mode;
+		PDTest.currentTest.startparam = n;
 		var currentTest = PDTest.currentTest.get();
 		if(!currentTest || currentTest.length == 0){
 			return;
