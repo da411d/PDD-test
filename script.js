@@ -1,4 +1,5 @@
 ﻿//USEFUL FUNCTIONS
+;"document"in self&&("classList"in document.createElement("_")&&(!document.createElementNS||"classList"in document.createElementNS("http://www.w3.org/2000/svg","g"))||!function(t){"use strict";if("Element"in t){var e="classList",n="prototype",i=t.Element[n],s=Object,r=String[n].trim||function(){return this.replace(/^\s+|\s+$/g,"")},o=Array[n].indexOf||function(t){for(var e=0,n=this.length;n>e;e++)if(e in this&&this[e]===t)return e;return-1},a=function(t,e){this.name=t,this.code=DOMException[t],this.message=e},c=function(t,e){if(""===e)throw new a("SYNTAX_ERR","An invalid or illegal string was specified");if(/\s/.test(e))throw new a("INVALID_CHARACTER_ERR","String contains an invalid character");return o.call(t,e)},l=function(t){for(var e=r.call(t.getAttribute("class")||""),n=e?e.split(/\s+/):[],i=0,s=n.length;s>i;i++)this.push(n[i]);this._updateClassName=function(){t.setAttribute("class",""+this)}},u=l[n]=[],h=function(){return new l(this)};if(a[n]=Error[n],u.item=function(t){return this[t]||null},u.contains=function(t){return t+="",-1!==c(this,t)},u.add=function(){var t,e=arguments,n=0,i=e.length,s=!1;do t=e[n]+"",-1===c(this,t)&&(this.push(t),s=!0);while(++n<i);s&&this._updateClassName()},u.remove=function(){var t,e,n=arguments,i=0,s=n.length,r=!1;do for(t=n[i]+"",e=c(this,t);-1!==e;)this.splice(e,1),r=!0,e=c(this,t);while(++i<s);r&&this._updateClassName()},u.toggle=function(t,e){t+="";var n=this.contains(t),i=n?e!==!0&&"remove":e!==!1&&"add";return i&&this[i](t),e===!0||e===!1?e:!n},u.toString=function(){return this.join(" ")},s.defineProperty){var f={get:h,enumerable:!0,configurable:!0};try{s.defineProperty(i,e,f)}catch(g){(void 0===g.number||-2146823252===g.number)&&(f.enumerable=!1,s.defineProperty(i,e,f))}}else s[n].__defineGetter__&&i.__defineGetter__(e,h)}}(self),function(){"use strict";var t=document.createElement("_");if(t.classList.add("c1","c2"),!t.classList.contains("c2")){var e=function(t){var e=DOMTokenList.prototype[t];DOMTokenList.prototype[t]=function(t){var n,i=arguments.length;for(n=0;i>n;n++)t=arguments[n],e.call(this,t)}};e("add"),e("remove")}if(t.classList.toggle("c3",!1),t.classList.contains("c3")){var n=DOMTokenList.prototype.toggle;DOMTokenList.prototype.toggle=function(t,e){return 1 in arguments&&!this.contains(t)==!e?e:n.call(this,t)}}t=null}());
 function rand(mi, ma){return Math.floor(Math.random() * (ma - mi + 1) + mi);}
 function randId(){return (new Date()-0).toString(36).replace(/[^a-z]+/g, "").substr(0,8) + "_" +rand(1000000, 9999999);}
 function getScrollTop(){var o=0;return'number'==typeof window.pageYOffset?o=window.pageYOffset:document.body&&document.body.scrollTop?o=document.body.scrollTop:document.documentElement&&(document.documentElement.scrollLeft||document.documentElement.scrollTop)&&(o=document.documentElement.scrollTop),o}
@@ -97,9 +98,9 @@ var PDTest = {
 	/*
 		START: Починаєм тест
 	*/
-	start: function(mode, n=0){
+	start: function(mode, num = -1){
 		PDTest.currentTest.mode = mode;
-		PDTest.currentTest.startparam = n;
+		PDTest.currentTest.startparam = num;
 		var currentTest = PDTest.currentTest.get();
 		if(!currentTest || currentTest.length == 0){
 			return;
@@ -114,31 +115,31 @@ var PDTest = {
 				break;
 				
 			case 1: //Білет по номеру
-				var index = n > 0 ? n-1 : ~~(Math.random()*currentTest.length);
+				var index = num > 0 ? num-1 : ~~(Math.random()*currentTest.length);
 				list = currentTest[index];
 				break;
 				
 			case 2: //Білет по темі
-				var subject = PDTest.currentTest.getSubject()[n].list;
+				var subject = PDTest.currentTest.getSubject()[num].list;
 				for(var i=0; i<subject.length; i++){
 					var s = subject[i];
-					var n = s.substr(0, 2)-1;
-					var m = s.substr(2, 2)-1;
+					let n = s.substr(0, 2)-1;
+					let m = s.substr(2, 2)-1;
 					list.push( PDTest.currentTest.get()[n][m] );
 				}
 				break;
 				
 			case 3: //Кожне N-те
 				for(var i=0; i < currentTest.length; i++){
-					list.push(currentTest[i][n-1]);
+					list.push(currentTest[i][num-1]);
 				}
 				break;
 				
 			case 4: //100 складних
 				for(var i=0; i < currentTest.length; i++){
-					for(var n=0; n < currentTest[i].length; n++){
-						if(currentTest[i][n].difficult){
-							list.push(currentTest[i][n]);
+					for(var j=0; j < currentTest[i].length; j++){
+						if(currentTest[i][j].difficult){
+							list.push(currentTest[i][j]);
 						}
 					}
 				}
@@ -146,14 +147,16 @@ var PDTest = {
 				
 			case 5: //Марафон
 				for(var i=0; i < currentTest.length; i++){
-					for(var n=0; n < currentTest[i].length; n++){
-						list.push(currentTest[i][n]);
+					for(var j=0; j < currentTest[i].length; j++){
+						list.push(currentTest[i][j]);
 					}
 				}
 				break;
 				
 			case 6: //Помилки
-				var li = localStorage.getItem("PDTest.mistakes").split(",");
+				var li = localStorage.getItem("PDTest.mistakes");
+				if(li.length<4)break;
+				li = li.split(",");
 				for(var i=0; i<li.length; i++){
 					var s = li[i];
 					var abcd = s.substr(0, 2).toUpperCase();
@@ -166,18 +169,19 @@ var PDTest = {
 		
 		list = shuffle(list);
 		var testHTML = "";
-		var testnavHTML = ""
+		var testnavHTML = "";
 		for(var i=0; i<list.length; i++){
 			testHTML += list[i].toHTML(i);
 			testnavHTML += '<button onclick="trigCard('+(i+1)+')" name="testnav" class="btn select w">'+(i+1)+'</button>';
 		}
-		byId("test").innerHTML = testHTML;
+		testnavHTML += '</span>';
+		byId("test").innerHTML = testHTML.length > 1 ? testHTML : "<h1>Вопросов не найдено</h1>";
 		byId("testnav").innerHTML = testnavHTML;
 		
 		PDTest.currentTest.answers.init(list.length);
 		PDTest.stats.render();
 		window.addEventListener("click", this.listener);
-		byId("done").className = byId("done").className.split(" active").join("");
+		byId("done").classList.remove("active");
 	},
 	
 	/*
@@ -196,7 +200,7 @@ var PDTest = {
 		window.removeEventListener("click", this.listener);
 		byId("testnav").innerHTML = "";
 		document.querySelectorAll("#question").forEach(function(e){
-			e.className += " hidden";
+			e.classList.add("hidden");
 		});
 		
 		//Виводим
@@ -247,17 +251,17 @@ var PDTest = {
 		}
 		
 		if(target.id == "question_answer"){
-			if(PDTest.currentTest.mode == 0 && root.className.indexOf("answered")!=-1)return;
+			if(PDTest.currentTest.mode == 0 && root.classList.contains("answered"))return;
 			
 			
-			root.className = "answered";
+			root.classList.add("answered");
 			var status = target.getAttribute("data-true") == "true";
-			root.className += status ? " true" : " false";
-			target.className += status ? " true" : " false";
+			root.classList.add(status ? "true" : "false");
+			target.classList.add(status ? "true" : "false");
 			PDTest.currentTest.answers.add(status);
 			document.querySelector("#testnav button:nth-of-type("+root.getAttribute("data-n")+")").className += status ? " g" : " r";
 			if(PDTest.currentTest.answers.finished){
-				byId("donebtn").className = byId("donebtn").className.split("hidden").join("");
+				byId("donebtn").classList.remove("hidden");
 			}
 			
 			if(PDTest.settings.get("autoContinue") == "true"){
@@ -266,9 +270,9 @@ var PDTest = {
 					if(n >= PDTest.currentTest.answers.max || PDTest.currentTest.answers.finished)return;
 					trigCard(n);
 					document.querySelectorAll("#testnav button").forEach(function(e){
-						e.className = e.className.split(" active").join("");
+						e.classList.remove("active");
 					});
-					document.querySelector("#testnav button:nth-of-type("+n+")").className += " active";
+					document.querySelector("#testnav button:nth-of-type("+n+")").classList.add("active");
 				}, 1000);
 			}
 			
@@ -280,7 +284,7 @@ var PDTest = {
 						PDTest.stop(false);
 						return;
 					}
-					PDTest.add(root.getAttribute("data-id").substr(2, 2)-0, 5);
+					PDTest.add(root.getAttribute("data-id").substr(4, 2)-0, 5);
 				}
 			}
 		}
@@ -460,6 +464,10 @@ function Question(data = ""){
 			container.setAttribute("data-n", i+1);
 			container.setAttribute("data-id", this.id);
 			if(isExam)container.setAttribute("data-exam", "true");
+				var num = document.createElement("span");
+				num.id = "num";
+				num.innerText = this.id.substr(0, 2) + " " + this.id.substr(2, 2) + "Б " + this.id.substr(4, 2) + "В";
+				container.appendChild(num);
 				var image = document.createElement("img");
 				image.src = DIR+this.image;
 				image.id = "question_image";
@@ -498,11 +506,11 @@ function Question(data = ""){
 window.addEventListener("click", function(e){
 	var target = e.target;
 	
-	if(target.className.indexOf("select") > -1){
+	if(target.classList.contains("select")){
 		document.getElementsByName(target.name).forEach(function(e){
-			e.className = e.className.split("active").join("").split("  ").join(" ");
+			e.classList.remove("active");
 		});
-		target.className += " active";
+		target.classList.add("active");
 	}
 	
 	if(target.id.indexOf("abcd") == 0){
@@ -515,22 +523,22 @@ window.addEventListener("click", function(e){
 		}
 	}
 	
-	if(target.className.indexOf("trigger") > -1){
+	if(target.classList.contains("trigger")){
 		event.preventDefault();
 		document.querySelectorAll(".spoiler").forEach(function(e){
-			e.className = e.className.split(" active").join("");
+			e.classList.remove(" active");
 		});
 		if(target.href.split("#")[1] && byId(target.href.split("#")[1])){
-			byId(target.href.split("#")[1]).className += " active";
+			byId(target.href.split("#")[1]).classList.add("active");
 		}
 	}
 });
 
 function trigCard(i){
 	document.querySelectorAll("#test #question").forEach(function(e){
-		e.className = e.className.split(" hidden").join("") + " hidden";
+		e.classList.add("hidden");
 	});
 	document.querySelectorAll("#test #question:nth-of-type("+i+")").forEach(function(e){
-		e.className = e.className.split(" hidden").join("");
+		e.classList.remove("hidden");
 	});
 }
