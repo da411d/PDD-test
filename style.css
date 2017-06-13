@@ -165,7 +165,6 @@ button.g, a.btn.g{background: #aed581;} button.g.active, a.btn.g.active{backgrou
 #sidebar > div{
 	display:inline-block;
 	min-width: 300px;
-	width: 40%;
+	width: 30%;
 	text-align: center;
-	padding-right: 16px;
 }
