@@ -2,11 +2,26 @@
 header('Content-Type: text/plain; charset=windows-1251');
 
 $id = isset($_GET["_"])&&$_GET["_"]=="cd" ? "cd" : "ab";
+$mode = isset($_GET["$"])&&$_GET["$"]=="sbj" ? "sbj" : "li";
 
+if($mode == "sbj"){
+	$subject = get("/{$id}_subject.txt");
+	$subject = explode("\n", $subject);
+	$list = [];
+	foreach($subject as $s){
+		if($s){
+			$s = explode("-", $s);
+			$s[1] = explode(",", $s[1]);
+			$list[] = $s;
+		}
+	}
+	print_r(json_encode($list));
+	die();
+}
 $test = [];
 $list = ls("{$id}_text");
 $image = ls("{$id}_image");
-$difficult = file_get_contents(dirname(__FILE__)."/{$id}_difficult.txt");
+$difficult = get("/{$id}_difficult.txt");
 
 if(count($list) < 2)die("%404%");
 
@@ -25,7 +40,7 @@ foreach($list as $l){
 	if(!$test[$n])$test[$n] = [];
 	
 	$test[$n][$m] = parseTest(
-		file_get_contents(dirname(__FILE__)."/{$id}_text/{$l}"), 
+		get("/{$id}_text/{$l}"), 
 		$images[$n][$m], 
 		$l
 	);
@@ -40,7 +55,6 @@ function parseTest($t, $img="", $id){
 	$id = preg_replace("/[^0-9]/", "", $id);
 	$diff = strpos($difficult, $id) !== false;
 	
-	$t = mb_convert_encoding($t, "UTF-8", "windows-1251");
 	$t = str_replace("\r", "", $t);
 	$t = explode("\n", $t);
 	$state = 0;
@@ -72,4 +86,10 @@ function ls($dir){
 	}
 	sort($ls);
 	return $ls;
+}
+function get($path){
+	$t = file_get_contents(dirname(__FILE__).$path);
+	$t = str_replace("\r", "", $t);
+	$t = mb_convert_encoding($t, "UTF-8", "windows-1251");
+	return $t;
 }

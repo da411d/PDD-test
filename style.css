@@ -60,7 +60,7 @@ button.g, a.btn.g{background: #aed581;} button.g.active, a.btn.g.active{backgrou
 
 
 
-#num button:nth-child(5n+1), #thm button:nth-child(5n+1), #N button:nth-child(5n){
+#num button:nth-child(5n+1), #sbj button:nth-child(5n), #N button:nth-child(5n){
 	margin-right:16px;
 }
 

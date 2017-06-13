@@ -49,16 +49,6 @@ var PDTest = {
 			}
 			PDTest.currentTest.AB = PDTest.currentTest.AB.concat(data);
 			PDTest.currentTest.set("AB");
-			
-			var list = PDTest.currentTest[PDTest.currentTest.current];
-			byId("num").innerHTML = '<button onclick="PDTest.start(1, -1);" class="btn select active" name="menu2lvl">Случайный</button>';
-			for(l in list){
-				let i = l-0+1;
-				byId("num").innerHTML += '<button onclick="PDTest.start(1, '+i+');" class="btn select" name="menu2lvl">'+i+'</button>';
-			}
-			
-			//Зразу стартуєм
-			PDTest.start(0, 0);
 		});
 		connect(DIR+"?_=cd", function(data){
 			if(data == "%404%"){
@@ -73,6 +63,35 @@ var PDTest = {
 				}
 			}
 			PDTest.currentTest.CD = PDTest.currentTest.CD.concat(data);
+		});
+		
+		connect(DIR+"?_=ab&$=sbj", function(data){
+			if(data == "%404%"){
+				PDTest.currentTest.subjectAB = false;
+				return;
+			}
+			data = JSON.parse(data);
+			for(var i=0; i<data.length;i++){
+				data[i] = {
+					title: data[i][0],
+					list: data[i][1]
+				}
+			}
+			PDTest.currentTest.subjectAB = data;
+		});
+		connect(DIR+"?_=cd&$=sbj", function(data){
+			if(data == "%404%"){
+				PDTest.currentTest.subjectCD = false;
+				return;
+			}
+			data = JSON.parse(data);
+			for(var i=0; i<data.length;i++){
+				data[i] = {
+					title: data[i][0],
+					list: data[i][1]
+				}
+			}
+			PDTest.currentTest.subjectCD = data;
 		});
 	}, 
 	
@@ -102,7 +121,14 @@ var PDTest = {
 				break;
 				
 			case 2: //Білет по темі
-				alert("Функція в розробці");
+				var list = [];
+				var subject = PDTest.currentTest.getSubject()[n].list;
+				for(var i=0; i<subject.length; i++){
+					var s = subject[i];
+					var n = s.substr(0, 2)-1;
+					var m = s.substr(2, 2)-1;
+					list.push( PDTest.currentTest.get()[n][m] );
+				}
 				break;
 				
 			case 3: //Кожне N-те
@@ -151,10 +177,10 @@ var PDTest = {
 	/*
 		RESTART: Перезапускаєм тест
 	*/
-	restart: function(mode, n){
+	restart: function(){
 		PDTest.stop();
-		PDTest.start(PDTest.mode, PDTest.startparam);
-		log("RESTART: "+PDTest.mode+" "+PDTest.startparam);
+		PDTest.start(PDTest.currentTest.mode, PDTest.currentTest.startparam);
+		log("RESTART: "+PDTest.currentTest.mode+" "+PDTest.currentTest.startparam);
 	},
 	
 	/*
@@ -253,20 +279,40 @@ var PDTest = {
 	},
 	
 	/*
-		currentTest: Ще має бути тест BC, але тут треба щось зробити.. Може генерувати все на стороні сервера
+		currentTest
 	*/
 	currentTest: {
 		current: false,
 		AB: [],
 		CD: [],
+		subjectAB: [],
+		subjectCD: [],
 		mode: 0,
 		startparam: 0,
 		get: function(){
 			return this[this.current] || this.AB;
 		},
+		getSubject: function(){
+			return this["subject"+this.current] || this.subjectAB;
+		},
 		set: function(a){
 			this.current = a||false;
 			PDTest.restart();
+			
+			var list = PDTest.currentTest.get();
+			byId("num").innerHTML = '<button onclick="PDTest.start(1, -1);" class="btn select active" name="menu2lvl">Случайный</button>';
+			for(l in list){
+				let i = l-0+1;
+				byId("num").innerHTML += '<button onclick="PDTest.start(1, '+i+');" class="btn select" name="menu2lvl">'+i+'</button>';
+			}
+			
+			var list = PDTest.currentTest.getSubject();
+			console.log(list);
+			byId("sbj").innerHTML = '';
+			for(var i=0; i<list.length; i++){
+				var l = list[i];
+				byId("sbj").innerHTML += '<button onclick="PDTest.start(2, '+i+');" class="btn select" name="menu2lvl">'+l.title+'</button>';
+			}
 		},
 		stats:{
 			true: 0,
