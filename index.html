@@ -70,27 +70,8 @@
 			<a class="btn trigger" onclick="PDTest.restart();">НАЧАТЬ ЗАНОВО</a><br>
 		</div>
 		<div>
-			<a name="category" class="btn trigger r"  onclick="PDTest.start(6)">Ошибки</a><br>
-			<a href="#settings" name="category" class="btn trigger g">Настройки</a><br>
-		</div>
-		<div class="spoiler" id="settings">
-			<h1>Настройки</h1>
-			<p>
-				Очистить статистику: 
-				<button onclick="PDTest.stats.clear();alert('Готово!');" class="btn">ОЧИСТИТЬ</button>
-			</p>
-			<p>
-				Авто-переход: 
-				<button name="settings_s1" onclick="PDTest.settings.set('autoContinue', true)" class="btn select">ДА</button>
-				<button name="settings_s1" onclick="PDTest.settings.set('autoContinue', false)" class="btn select">НЕТ</button>
-				<script>
-					if(PDTest.settings.get("autoContinue") == "true"){
-						document.getElementsByName("settings_s1")[0].className += " active";
-					}else{
-						document.getElementsByName("settings_s1")[1].className += " active";
-					}
-				</script>
-			</p>
+			<a name="category" class="btn trigger r" onclick="PDTest.start(6)">Ошибки</a><br>
+			<a name="category" class="btn trigger g" onclick="PDTest.stats.clear();alert('Готово!');" >Очистить статистику</a>
 		</div>
 	</div>
 </body>

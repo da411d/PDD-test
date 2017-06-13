@@ -154,7 +154,7 @@ var PDTest = {
 				break;
 				
 			case 6: //Помилки
-				var li = localStorage.getItem("PDTest.mistakes");
+				var li = localStorage.getItem("PDTest.mistakes")||"";
 				if(li.length<4)break;
 				li = li.split(",");
 				for(var i=0; i<li.length; i++){
@@ -262,17 +262,15 @@ var PDTest = {
 				byId("donebtn").classList.remove("hidden");
 			}
 			
-			if(PDTest.settings.get("autoContinue") == "true"){
-				setTimeout(function(){
-					var n = root.getAttribute("data-n")-0+1;
-					if(n > PDTest.currentTest.answers.max || PDTest.currentTest.answers.finished)return;
-					trigCard(n);
-					document.querySelectorAll("#testnav button").forEach(function(e){
-						e.classList.remove("active");
-					});
-					document.querySelector("#testnav button:nth-of-type("+n+")").classList.add("active");
-				}, 1000);
-			}
+			setTimeout(function(){
+				var n = root.getAttribute("data-n")-0+1;
+				if(n > PDTest.currentTest.answers.max || PDTest.currentTest.answers.finished)return;
+				trigCard(n);
+				document.querySelectorAll("#testnav button").forEach(function(e){
+					e.classList.remove("active");
+				});
+				document.querySelector("#testnav button:nth-of-type("+n+")").classList.add("active");
+			}, 1000);
 			
 			if(status){
 				PDTest.stats.tryRemoveMistake(root.getAttribute("data-id"));
@@ -460,20 +458,6 @@ var PDTest = {
 				localStorage.setItem("PDTest.mistakes", data);
 			}
 		}
-	},
-	
-	/*
-		SETTINGS
-	*/
-	settings:{
-		get: function(n){
-			var data = localStorage.getItem("PDTest.settings."+n) || false;
-			return data;
-		},
-		set: function(n, t){
-			localStorage.setItem("PDTest.settings."+n, t);
-		},
-		
 	}
 };
 
@@ -558,7 +542,7 @@ window.addEventListener("click", function(e){
 	}
 	
 	if(target.classList.contains("trigger")){
-		event.preventDefault();
+		e.preventDefault();
 		if(target.href.split("#")[1] && byId(target.href.split("#")[1])){
 			document.querySelectorAll(".spoiler:not(#"+target.href.split("#")[1]+")").forEach(function(e){
 				e.classList.remove("active");
