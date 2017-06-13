@@ -208,7 +208,7 @@ var PDTest = {
 		byId("done_false").innerText = PDTest.currentTest.answers.false;
 		byId("done_total").innerText = PDTest.currentTest.answers.total;
 		byId("done_of").innerText = PDTest.currentTest.answers.max;
-		byId("done").classList += " active";
+		byId("done").classList.add("active");
 	}, 
 	
 	/*
@@ -526,7 +526,7 @@ window.addEventListener("click", function(e){
 	if(target.classList.contains("trigger")){
 		event.preventDefault();
 		document.querySelectorAll(".spoiler").forEach(function(e){
-			e.classList.remove(" active");
+			e.classList.remove("active");
 		});
 		if(target.href.split("#")[1] && byId(target.href.split("#")[1])){
 			byId(target.href.split("#")[1]).classList.add("active");

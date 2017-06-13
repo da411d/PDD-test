@@ -2,6 +2,7 @@
 header('Content-Type: text/plain; charset=windows-1251');
 
 $id = isset($_GET["_"])&&$_GET["_"]=="cd" ? "cd" : "ab";
+define("_ID_", $id);
 $mode = isset($_GET["$"])&&$_GET["$"]=="sbj" ? "sbj" : "li";
 
 if($mode == "sbj"){
@@ -52,8 +53,8 @@ function parseTest($t, $img="", $id){
 	$question = "";
 	$answers = [];
 	$tip = "";
-	$id = preg_replace("/[^0-9]/", "", $id);
-	$diff = strpos($difficult, $id) !== false;
+	$id = strtoupper(_ID_) . preg_replace("/[^0-9]/", "", $id);
+	$diff = strpos($difficult, preg_replace("/[^0-9]/", "", $id)) !== false;
 	
 	$t = str_replace("\r", "", $t);
 	$t = explode("\n", $t);
