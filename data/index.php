@@ -71,6 +71,7 @@ function parseTest($t, $img="", $id){
 		"question" => $question,
 		"answers" => $answers,
 		"tip" => $tip,
+		"id" => $id,
 		"image" => $img ? $img : "/blank.jpg",
 		"difficult" => $diff
 	];

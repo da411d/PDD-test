@@ -107,7 +107,6 @@ var PDTest = {
 		var list = [];
 		switch(mode){
 			case 0: //Екзамен
-				var list = [];
 				for(var i=0; i < currentTest[0].length; i++){
 					var index = ~~(Math.random()*currentTest.length);
 					list.push(currentTest[index][i]);
@@ -120,7 +119,6 @@ var PDTest = {
 				break;
 				
 			case 2: //Білет по темі
-				var list = [];
 				var subject = PDTest.currentTest.getSubject()[n].list;
 				for(var i=0; i<subject.length; i++){
 					var s = subject[i];
@@ -131,7 +129,6 @@ var PDTest = {
 				break;
 				
 			case 3: //Кожне N-те
-				var list = [];
 				for(var i=0; i < currentTest.length; i++){
 					list.push(currentTest[i][n-1]);
 				}
@@ -148,11 +145,21 @@ var PDTest = {
 				break;
 				
 			case 5: //Марафон
-				var list = [];
 				for(var i=0; i < currentTest.length; i++){
 					for(var n=0; n < currentTest[i].length; n++){
 						list.push(currentTest[i][n]);
 					}
+				}
+				break;
+				
+			case 6: //Помилки
+				var li = localStorage.getItem("PDTest.mistakes").split(",");
+				for(var i=0; i<li.length; i++){
+					var s = li[i];
+					var abcd = s.substr(0, 2).toUpperCase();
+					var n = s.substr(2, 2)-1;
+					var m = s.substr(4, 2)-1;
+					list.push( PDTest.currentTest[abcd][n][m] );
 				}
 				break;
 		}
@@ -266,6 +273,7 @@ var PDTest = {
 			}
 			
 			if(status == false){
+				PDTest.stats.addMistake(PDTest.currentTest.current, root.getAttribute("data-id"));
 				if(PDTest.mode == 0){
 					if(root.getAttribute("data-exam") == "true" || PDTest.currentTest.answers.false >= 3){
 						PDTest.currentTest.answers.finished = true;
@@ -275,7 +283,6 @@ var PDTest = {
 					
 					PDTest.add(root.getAttribute("data-n"), 5);
 				}
-
 			}
 		}
 	},
@@ -402,8 +409,19 @@ var PDTest = {
 		},
 		clear: function(){
 			localStorage.setItem("PDTest.stats", "0:0:0");
+			localStorage.setItem("PDTest.mistakes", "");
 			this.true = this.false = this.total = 0;
 			this.render();
+		},
+		addMistake: function(i, t){
+			var data = localStorage.getItem("PDTest.mistakes") || "";
+			if(data.indexOf(t) == -1){
+				data = data.split(",");
+				data.push(i.toUpperCase()+t);
+				data = data.join(",");
+				if(data[0] == ",")data = data.substr(1);
+				localStorage.setItem("PDTest.mistakes", data);
+			}
 		}
 	},
 	
@@ -417,7 +435,8 @@ var PDTest = {
 		},
 		set: function(n, t){
 			localStorage.setItem("PDTest.settings."+n, t);
-		}
+		},
+		
 	}
 };
 
@@ -431,6 +450,7 @@ function Question(data = ""){
 		answers: data.answers||[],
 		tip: data.tip||"",
 		image: data.image||"",
+		id: data.id||"",
 		difficult: data.difficult||"",
 		
 		toHTML: function(i = 0, isExam=false){
@@ -439,6 +459,7 @@ function Question(data = ""){
 			container.id = "question";
 			container.className = !!i ? " hidden" : "";
 			container.setAttribute("data-n", i+1);
+			container.setAttribute("data-id", this.id);
 			if(isExam)container.setAttribute("data-exam", "true");
 				var image = document.createElement("img");
 				image.src = DIR+this.image;
