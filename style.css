@@ -77,10 +77,6 @@ button.g, a.btn.g{background: #aed581;} button.g.active, a.btn.g.active{backgrou
 #testnav button:nth-child(5n){
 	margin-right:16px;
 }
-#stats{
-	position:fixed;
-	right:0px;
-}
 #h1{
 	text-align:center;
 }

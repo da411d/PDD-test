@@ -168,7 +168,7 @@ var PDTest = {
 		byId("test").innerHTML = testHTML;
 		byId("testnav").innerHTML = testnavHTML;
 		
-		PDTest.currentTest.stats.init(list.length);
+		PDTest.currentTest.answers.init(list.length);
 		window.addEventListener("click", this.listener);
 		byId("done").className = byId("done").className.split(" active").join("");
 		log("THE TEST HAS STARTED");
@@ -195,10 +195,10 @@ var PDTest = {
 		});
 		
 		//Виводим
-		byId("done_true").innerText = PDTest.currentTest.stats.true;
-		byId("done_false").innerText = PDTest.currentTest.stats.false;
-		byId("done_total").innerText = PDTest.currentTest.stats.total;
-		byId("done_of").innerText = PDTest.currentTest.stats.max;
+		byId("done_true").innerText = PDTest.currentTest.answers.true;
+		byId("done_false").innerText = PDTest.currentTest.answers.false;
+		byId("done_total").innerText = PDTest.currentTest.answers.total;
+		byId("done_of").innerText = PDTest.currentTest.answers.max;
 		byId("done").classList += " active";
 		log("THE TEST HAS STOPPED");
 	}, 
@@ -220,14 +220,14 @@ var PDTest = {
 		var testHTML = "";
 		var testnavHTML = ""
 		for(var i=0; i<list.length; i++){
-			var m = PDTest.currentTest.stats.max+i+1;
+			var m = PDTest.currentTest.answers.max+i+1;
 			testHTML += list[i].toHTML(m-1, 1);
 			testnavHTML += '<button onclick="trigCard('+m+')" name="testnav" class="btn select d">'+m+'</button>';
 		}
 		byId("test").innerHTML += testHTML;
 		byId("testnav").innerHTML += testnavHTML;
 		
-		PDTest.currentTest.stats.max += n;
+		PDTest.currentTest.answers.max += n;
 		log("ADDED "+n+" QUESTIONS");
 	},
 	
@@ -251,14 +251,14 @@ var PDTest = {
 			var status = target.getAttribute("data-true") == "true";
 			root.className += status ? " true" : " false";
 			target.className += status ? " true" : " false";
-			PDTest.currentTest.stats.add(status);
+			PDTest.currentTest.answers.add(status);
 			document.querySelector("#testnav button:nth-of-type("+root.getAttribute("data-n")+")").className += status ? " g" : " r";
-			if(PDTest.currentTest.stats.finished){
+			if(PDTest.currentTest.answers.finished){
 				byId("donebtn").className = byId("donebtn").className.split("hidden").join("");
 			}
 			setTimeout(function(){
 				var n = root.getAttribute("data-n")-0+1;
-				if(n >= PDTest.currentTest.stats.max)return;
+				if(n >= PDTest.currentTest.answers.max)return;
 				trigCard(n);
 				document.querySelector("#testnav button:nth-of-type("+n+")").className += " active";
 			}, 1000);
@@ -266,7 +266,7 @@ var PDTest = {
 			
 			if(status == false){
 				if(PDTest.mode == 0){
-					if(root.getAttribute("data-exam") == "true" || PDTest.currentTest.stats.false >= 3){
+					if(root.getAttribute("data-exam") == "true" || PDTest.currentTest.answers.false >= 3){
 						PDTest.stop(false);
 						return;
 					}
@@ -307,20 +307,20 @@ var PDTest = {
 			}
 			
 			var list = PDTest.currentTest.getSubject();
-			console.log(list);
 			byId("sbj").innerHTML = '';
 			for(var i=0; i<list.length; i++){
 				var l = list[i];
 				byId("sbj").innerHTML += '<button onclick="PDTest.start(2, '+i+');" class="btn select" name="menu2lvl">'+l.title+'</button>';
 			}
 		},
-		stats:{
+		answers:{
 			true: 0,
 			false: 0,
 			total: 0,
 			max: 0,
 			finished: false,
 			add: function(n){
+				PDTest.stats.add(n);
 				if(n == 1){
 					this.true++;
 				}else{
@@ -349,9 +349,56 @@ var PDTest = {
 				if(this.finished){
 					setTimeout(function(){
 						PDTest.stop();
-					}, 1000);
+					}, 2000);
 				}
 			}
+		}
+	},
+	
+	/*
+		СТАТИСТИКА
+	*/
+	stats:{
+		true: 0,
+		false: 0,
+		total: 0,
+		add: function(n){
+			var data = localStorage.getItem("PDTest.stats") || "0:0:0";
+			data = data.split(":");
+			
+			this.true = data[0]-0;
+			this.false = data[1]-0;
+			this.total = data[2]-0;
+			
+			if(n == 1){
+				this.true++;
+			}else{
+				this.false++;
+			}
+			this.total++;
+			
+			var data = [
+				this.true,
+				this.false,
+				this.total
+			];
+			localStorage.setItem("PDTest.stats", data.join(":"));
+			
+			this.render();
+		},
+		render: function(){
+			console.log(
+				this.true,
+				this.false,
+				this.total
+			);
+			//byId("sidebar_true").innerText = this.true;
+			//byId("sidebar_false").innerText = this.false;
+			//byId("sidebar_total").innerText = this.total;
+		},
+		clear: function(){
+			localStorage.setItem("PDTest.stats", "0:0:0");
+			this.true = this.false = this.total = 0;
 		}
 	}
 };
