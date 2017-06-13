@@ -222,7 +222,7 @@ var PDTest = {
 			list.push(currentTest[index][current-1]);
 		}
 		var testHTML = "";
-		var testnavHTML = ""
+		var testnavHTML = "";
 		for(var i=0; i<list.length; i++){
 			var m = PDTest.currentTest.answers.max+i+1;
 			testHTML += list[i].toHTML(m-1, 1);
@@ -247,7 +247,7 @@ var PDTest = {
 		}
 		
 		if(target.id == "question_answer"){
-			if(PDTest.mode == 0 && root.className.indexOf("answered")!=-1)return;
+			if(PDTest.currentTest.mode == 0 && root.className.indexOf("answered")!=-1)return;
 			
 			
 			root.className = "answered";
@@ -274,14 +274,13 @@ var PDTest = {
 			
 			if(status == false){
 				PDTest.stats.addMistake(PDTest.currentTest.current, root.getAttribute("data-id"));
-				if(PDTest.mode == 0){
+				if(PDTest.currentTest.mode == 0){
 					if(root.getAttribute("data-exam") == "true" || PDTest.currentTest.answers.false >= 3){
 						PDTest.currentTest.answers.finished = true;
 						PDTest.stop(false);
 						return;
 					}
-					
-					PDTest.add(root.getAttribute("data-n"), 5);
+					PDTest.add(root.getAttribute("data-id").substr(2, 2)-0, 5);
 				}
 			}
 		}
