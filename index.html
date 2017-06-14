@@ -9,24 +9,22 @@
 	<script src='script.js'></script>
 </head>
 <body>
-	<div id="panel" align="center">
-		<div>
-			<button id="abcd_ab" onclick="PDTest.currentTest.set(this.innerText);" name="abcd" class="btn g select active">AB</button>
-			<button id="abcd_cd" onclick="PDTest.currentTest.set(this.innerText);" name="abcd" class="btn g select">CD</button>
-			<span id="separator"></span>
-			<a name="category" class="btn select active" onclick="PDTest.start(0);">Экзамен</a>
-			<select name="category" id="num" class="btn select" onchange="PDTest.start(1, this.value);">
-				<option selected disabled>Билет по номеру</option>
-			</select>
-			<select name="category" id="sbj" class="btn select" onchange="PDTest.start(2, this.value);">
-				<option selected disabled>Билет по теме</option>
-			</select>
-			<select name="category" id="N" class="btn select" onchange="PDTest.start(3, this.value);">
-				<option selected disabled>Каждый N-й вопрос</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option>
-			</select>
-			<a name="category" class="btn select"  onclick="PDTest.start(4)">100 сложных</a>
-			<a name="category" class="btn select"  onclick="PDTest.start(5)">Марафон</a>
-		</div>
+	<div id="panel">
+		<button id="abcd_ab" onclick="PDTest.currentTest.set(this.innerText);" name="abcd" class="btn g select active">AB</button>
+		<button id="abcd_cd" onclick="PDTest.currentTest.set(this.innerText);" name="abcd" class="btn g select">CD</button>
+		<span id="separator"></span>
+		<a name="category" class="btn select active" onclick="PDTest.start(0);">Экзамен</a>
+		<select name="category" id="num" class="btn select" onchange="PDTest.start(1, this.value);">
+			<option selected disabled>Билет по номеру</option>
+		</select>
+		<select name="category" id="sbj" class="btn select" onchange="PDTest.start(2, this.value);">
+			<option selected disabled>Билет по теме</option>
+		</select>
+		<select name="category" id="N" class="btn select" onchange="PDTest.start(3, this.value);">
+			<option selected disabled>Каждый N-й вопрос</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option>
+		</select>
+		<a name="category" class="btn select"  onclick="PDTest.start(4)">100 сложных</a>
+		<a name="category" class="btn select"  onclick="PDTest.start(5)">Марафон</a>
 	</div>
 	<div id="testnav"></div>
 	<div id="test"></div>
@@ -62,12 +60,11 @@
 			Вместе: <span id="stats_total">0</span>
 		</div>
 		<div>
-			<a onclick="PDTest.stop();" class="btn" id="donebtn">ЗАВЕРШИТЬ ТЕСТ</a><br>
 			<a class="btn trigger" onclick="PDTest.restart();">НАЧАТЬ ЗАНОВО</a><br>
+			<a name="category" class="btn r" onclick="PDTest.start(6)">Ошибки</a><br>
+			<a name="category" class="btn g hidden" style="display:none;" onclick="PDTest.stats.clear();alert('Готово!');" >Очистить статистику</a>
 		</div>
 		<div>
-			<a name="category" class="btn r" onclick="PDTest.start(6)">Ошибки</a><br>
-			<a name="category" class="btn g" onclick="PDTest.stats.clear();alert('Готово!');" >Очистить статистику</a>
 		</div>
 	</div>
 </body>

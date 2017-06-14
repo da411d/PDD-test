@@ -22,9 +22,9 @@ body{
 }
 
 
-button, a.btn{
+button, a.btn,select{
 	display:inline-block;
-	min-width: 180px;
+	min-width: 150px;
 	margin: 4px 8px;
 	padding: 8px;
 	background:#8888ff;
@@ -34,6 +34,7 @@ button, a.btn{
 	box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
 	border: none;
 	cursor: pointer;
+	font-size:14px;
 }
 button.w100, a.btn.w100{
 	min-width:0px;
@@ -58,20 +59,6 @@ button.d, a.btn.d{background: #eeeeee;color:#000000;} button.d.active, a.btn.d.a
 button.r, a.btn.r{background: #ff8888;} button.r.active, a.btn.r.active{background: #ff4444;}
 button.g, a.btn.g{background: #aed581;} button.g.active, a.btn.g.active{background: #4caf50;}
 
-select{
-	display:inline-block;
-	min-width: 180px;
-	margin: 4px 8px;
-	padding: 8px;
-	background:#8888ff;
-	color: #ffffff;
-	text-decoration: none;
-	text-align: center;
-	box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
-	border: none;
-	cursor: pointer;
-	font-size:16px;
-}
 select.active{
 	background: #4444ff;
 	box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6);
@@ -82,9 +69,6 @@ option{
 	padding:4px;
 	font-size:14px;
 }
-#num button:nth-child(5n), #sbj button:nth-child(5n), #N button:nth-child(5n){
-	margin-right:16px;
-}
 
 #separator{
 	display:inline-block;
@@ -93,22 +77,24 @@ option{
 }
 
 #testnav{
+	width:600px;
 	margin: 16px auto;
-	text-align:center;
+	text-align:left;
 }
-#testnav #testnavblock{
-	display:inline-block;
+#testnav .btn:nth-child(5n){
 	margin-right:16px;
 }
+
 #h1{
 	text-align:center;
 }
 #test{
-	position:relative;
-	display:block;
-	width:750px;
-	max-width:100%;
+	position: relative;
+	display: block;
+	width: 750px;
+	max-width: 100%;
 	margin: 16px auto;
+	text-align: center;
 }
 #question{
 	position: relative;
@@ -119,6 +105,7 @@ option{
 	max-height:1000px;
 	opacity: 1;
 	max-height: 200vh;
+	text-align:left;
 }
 #question.hidden{
 	max-height: 0vh;

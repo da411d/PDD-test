@@ -170,7 +170,7 @@ var PDTest = {
 		var testnavHTML = "";
 		for(var i=0; i<list.length; i++){
 			testHTML += list[i].toHTML(i);
-			testnavHTML += '<button onclick="trigCard('+(i+1)+')" name="testnav" class="btn select w">'+(i+1)+'</button>';
+			testnavHTML += '<a onclick="trigCard('+(i+1)+')" name="testnav" class="btn select w">'+(i+1)+'</a>';
 		}
 		testnavHTML += '</span>';
 		byId("test").innerHTML = testHTML.length > 1 ? testHTML : "<h1>Вопросов не найдено</h1>";
@@ -257,7 +257,7 @@ var PDTest = {
 			root.classList.add(status ? "true" : "false");
 			target.classList.add(status ? "true" : "false");
 			PDTest.currentTest.answers.add(status);
-			document.querySelector("#testnav button:nth-of-type("+root.getAttribute("data-n")+")").className += status ? " g" : " r";
+			document.querySelector("#testnav .btn:nth-of-type("+root.getAttribute("data-n")+")").className += status ? " g" : " r";
 			if(PDTest.currentTest.answers.finished){
 				byId("donebtn").classList.remove("hidden");
 			}
@@ -266,10 +266,10 @@ var PDTest = {
 				var n = root.getAttribute("data-n")-0+1;
 				if(n > PDTest.currentTest.answers.max || PDTest.currentTest.answers.finished)return;
 				trigCard(n);
-				document.querySelectorAll("#testnav button").forEach(function(e){
+				document.querySelectorAll("#testnav .btn").forEach(function(e){
 					e.classList.remove("active");
 				});
-				document.querySelector("#testnav button:nth-of-type("+n+")").classList.add("active");
+				document.querySelector("#testnav .btn:nth-of-type("+n+")").classList.add("active");
 			}, 1000);
 			
 			if(status){
@@ -529,16 +529,6 @@ window.addEventListener("click", function(e){
 			e.classList.remove("active");
 		});
 		target.classList.add("active");
-	}
-	
-	if(target.id.indexOf("abcd") == 0){
-		var list = PDTest.currentTest.get();
-		
-		byId("num").innerHTML = '<button onclick="PDTest.start(1, -1);" class="btn select active" name="menu2lvl">Случайный</button>';
-		for(l in list){
-			let i = l-0+1;
-			byId("num").innerHTML += '<button onclick="PDTest.start(1, '+i+');" class="btn select" name="menu2lvl">'+i+'</button>';
-		}
 	}
 });
 
