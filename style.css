@@ -58,9 +58,31 @@ button.d, a.btn.d{background: #eeeeee;color:#000000;} button.d.active, a.btn.d.a
 button.r, a.btn.r{background: #ff8888;} button.r.active, a.btn.r.active{background: #ff4444;}
 button.g, a.btn.g{background: #aed581;} button.g.active, a.btn.g.active{background: #4caf50;}
 
-
-
-#num button:nth-child(5n+1), #sbj button:nth-child(5n), #N button:nth-child(5n){
+select{
+	display:inline-block;
+	min-width: 180px;
+	margin: 4px 8px;
+	padding: 8px;
+	background:#8888ff;
+	color: #ffffff;
+	text-decoration: none;
+	text-align: center;
+	box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+	border: none;
+	cursor: pointer;
+	font-size:16px;
+}
+select.active{
+	background: #4444ff;
+	box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6);
+}
+option{
+	background:#ddddff;
+	color:#000000;
+	padding:4px;
+	font-size:14px;
+}
+#num button:nth-child(5n), #sbj button:nth-child(5n), #N button:nth-child(5n){
 	margin-right:16px;
 }
 

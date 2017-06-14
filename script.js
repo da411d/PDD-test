@@ -311,17 +311,17 @@ var PDTest = {
 			PDTest.restart();
 			
 			var list = PDTest.currentTest.get();
-			byId("num").innerHTML = '<button onclick="PDTest.start(1, -1);" class="btn select active" name="menu2lvl">Случайный</button>';
+			byId("num").innerHTML = '<option selected disabled>Билет по номеру</option>';
 			for(l in list){
 				let i = l-0+1;
-				byId("num").innerHTML += '<button onclick="PDTest.start(1, '+i+');" class="btn select" name="menu2lvl">'+i+'</button>';
+				byId("num").innerHTML += '<option value="'+i+'">'+i+'</option>';
 			}
 			
 			var list = PDTest.currentTest.getSubject();
-			byId("sbj").innerHTML = '';
+			byId("sbj").innerHTML = '<option selected disabled>Билет по теме</option>';
 			for(var i=0; i<list.length; i++){
 				var l = list[i];
-				byId("sbj").innerHTML += '<button onclick="PDTest.start(2, '+i+');" class="btn select" name="menu2lvl">'+l.title+'</button>';
+				byId("sbj").innerHTML += '<option value="'+i+'">'+l.title+'</option>';
 			}
 		},
 		getQById: function(p1, p2=false, p3=false){
@@ -538,20 +538,6 @@ window.addEventListener("click", function(e){
 		for(l in list){
 			let i = l-0+1;
 			byId("num").innerHTML += '<button onclick="PDTest.start(1, '+i+');" class="btn select" name="menu2lvl">'+i+'</button>';
-		}
-	}
-	
-	if(target.classList.contains("trigger")){
-		e.preventDefault();
-		if(target.href.split("#")[1] && byId(target.href.split("#")[1])){
-			document.querySelectorAll(".spoiler:not(#"+target.href.split("#")[1]+")").forEach(function(e){
-				e.classList.remove("active");
-			});
-			byId(target.href.split("#")[1]).classList.toggle("active");
-		}else{
-			document.querySelectorAll(".spoiler").forEach(function(e){
-				e.classList.remove("active");
-			});
 		}
 	}
 });

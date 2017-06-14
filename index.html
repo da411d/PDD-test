@@ -14,22 +14,18 @@
 			<button id="abcd_ab" onclick="PDTest.currentTest.set(this.innerText);" name="abcd" class="btn g select active">AB</button>
 			<button id="abcd_cd" onclick="PDTest.currentTest.set(this.innerText);" name="abcd" class="btn g select">CD</button>
 			<span id="separator"></span>
-			<a name="category" class="btn select active trigger" onclick="PDTest.start(0);">Экзамен</a>
-			<a href="#num" name="category" class="btn select trigger"  onclick="PDTest.start(1, -1);">Билет по номеру</a>
-			<a href="#sbj" name="category" class="btn select trigger uc"  onclick="PDTest.start(2, 0);">Билет по теме</a>
-			<a href="#N" name="category" class="btn select trigger"  onclick="PDTest.start(3, 1);">Каждый N-й вопрос</a>
-			<a name="category" class="btn select trigger"  onclick="PDTest.start(4)">100 сложных</a>
-			<a name="category" class="btn select trigger"  onclick="PDTest.start(5)">Марафон</a>
-		</div>
-		
-		<div class="spoiler select" id="num">
-			Вопросов не найдено
-		</div>
-		<div class="spoiler" id="sbj">
-			Тем не найдено
-		</div>
-		<div class="spoiler" id="N">
-			<button onclick="PDTest.start(3, 1);" class="btn select" name="menu2lvl">1</button><button onclick="PDTest.start(3, 2);" class="btn select" name="menu2lvl">2</button><button onclick="PDTest.start(3, 3);" class="btn select" name="menu2lvl">3</button><button onclick="PDTest.start(3, 4);" class="btn select" name="menu2lvl">4</button><button onclick="PDTest.start(3, 5);" class="btn select" name="menu2lvl">5</button><button onclick="PDTest.start(3, 6);" class="btn select" name="menu2lvl">6</button><button onclick="PDTest.start(3, 7);" class="btn select" name="menu2lvl">7</button><button onclick="PDTest.start(3, 8);" class="btn select" name="menu2lvl">8</button><button onclick="PDTest.start(3, 9);" class="btn select" name="menu2lvl">9</button><button onclick="PDTest.start(3, 10);" class="btn select" name="menu2lvl">10</button><button onclick="PDTest.start(3, 11);" class="btn select" name="menu2lvl">11</button><button onclick="PDTest.start(3, 12);" class="btn select" name="menu2lvl">12</button><button onclick="PDTest.start(3, 13);" class="btn select" name="menu2lvl">13</button><button onclick="PDTest.start(3, 14);" class="btn select" name="menu2lvl">14</button><button onclick="PDTest.start(3, 15);" class="btn select" name="menu2lvl">15</button><button onclick="PDTest.start(3, 16);" class="btn select" name="menu2lvl">16</button><button onclick="PDTest.start(3, 17);" class="btn select" name="menu2lvl">17</button><button onclick="PDTest.start(3, 18);" class="btn select" name="menu2lvl">18</button><button onclick="PDTest.start(3, 19);" class="btn select" name="menu2lvl">19</button><button onclick="PDTest.start(3, 20);" class="btn select" name="menu2lvl">20</button>
+			<a name="category" class="btn select active" onclick="PDTest.start(0);">Экзамен</a>
+			<select name="category" id="num" class="btn select" onchange="PDTest.start(1, this.value);">
+				<option selected disabled>Билет по номеру</option>
+			</select>
+			<select name="category" id="sbj" class="btn select" onchange="PDTest.start(2, this.value);">
+				<option selected disabled>Билет по теме</option>
+			</select>
+			<select name="category" id="N" class="btn select" onchange="PDTest.start(3, this.value);">
+				<option selected disabled>Каждый N-й вопрос</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option>
+			</select>
+			<a name="category" class="btn select"  onclick="PDTest.start(4)">100 сложных</a>
+			<a name="category" class="btn select"  onclick="PDTest.start(5)">Марафон</a>
 		</div>
 	</div>
 	<div id="testnav"></div>
@@ -70,8 +66,8 @@
 			<a class="btn trigger" onclick="PDTest.restart();">НАЧАТЬ ЗАНОВО</a><br>
 		</div>
 		<div>
-			<a name="category" class="btn trigger r" onclick="PDTest.start(6)">Ошибки</a><br>
-			<a name="category" class="btn trigger g" onclick="PDTest.stats.clear();alert('Готово!');" >Очистить статистику</a>
+			<a name="category" class="btn r" onclick="PDTest.start(6)">Ошибки</a><br>
+			<a name="category" class="btn g" onclick="PDTest.stats.clear();alert('Готово!');" >Очистить статистику</a>
 		</div>
 	</div>
 </body>
