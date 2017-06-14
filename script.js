@@ -194,7 +194,7 @@ var PDTest = {
 	/*
 		STOP: Завершуємо тест. Знімаєм всі лістенери, ще щось тут буде..
 	*/
-	stop: function(){
+	stop: function(good = true){
 		//Обнуляєм
 		window.removeEventListener("click", this.listener);
 		byId("testnav").innerHTML = "";
@@ -208,6 +208,25 @@ var PDTest = {
 		byId("done_total").innerText = PDTest.currentTest.answers.total;
 		byId("done_of").innerText = PDTest.currentTest.answers.max;
 		byId("done").classList.add("active");
+		
+		var tpl = "";
+		if( good && PDTest.currentTest.answers.false == 0){
+			tpl = [
+				"<h1>Поздравляем!</h1>",
+				"Экзамен на категорию "+PDTest.currentTest.current+" сдан без ошибок!"
+			].join("");
+		}else if(!good){
+			tpl = [
+				"<h1>К сожалению, экзамен не сдан</h1>",
+				"Предлагаем Вам потренироваться на решении \"Билетов\" в одной из следующих вкладок или подучить Правила на этом сайте"
+			].join("");
+		}else{
+			tpl = [
+				"<h1>Тест завершен</h1>",
+				"Предлагаем Вам потренироваться на решении \"Билетов\" в одной из следующих вкладок или подучить Правила на этом сайте"
+			].join("");
+		}
+		byId("donetitle").innerHTML = tpl;
 	}, 
 	
 	/*
@@ -258,7 +277,7 @@ var PDTest = {
 			root.classList.add(status ? "true" : "false");
 			target.classList.add(status ? "true" : "false");
 			PDTest.currentTest.answers.add(status);
-			document.querySelector("#testnav .btn:nth-of-type("+root.getAttribute("data-n")+")").className += status ? " g" : " r";
+			document.querySelector("#testnav .btn:nth-child("+root.getAttribute("data-n")+")").className += status ? " g" : " r";
 			
 			setTimeout(function(){
 				var n = root.getAttribute("data-n")-0+1;
@@ -267,7 +286,7 @@ var PDTest = {
 				document.querySelectorAll("#testnav .btn").forEach(function(e){
 					e.classList.remove("active");
 				});
-				document.querySelector("#testnav .btn:nth-of-type("+n+")").classList.add("active");
+				document.querySelector("#testnav .btn:nth-child("+n+")").classList.add("active");
 			}, 1000);
 			
 			if(status){
