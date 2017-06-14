@@ -333,7 +333,7 @@ var PDTest = {
 			byId("num").innerHTML = '<option selected disabled>Билет по номеру</option>';
 			for(l in list){
 				let i = l-0+1;
-				byId("num").innerHTML += '<option value="'+i+'">'+i+'</option>';
+				byId("num").innerHTML += '<option value="'+i+'">'+i+'-й билет</option>';
 			}
 			
 			var list = PDTest.currentTest.getSubject();
