@@ -156,6 +156,7 @@ var PDTest = {
 			case 6: //Помилки
 				var li = localStorage.getItem("PDTest.mistakes")||"";
 				if(li.length<4)break;
+				if(li[li.length-1] == ",")li = li.substr(0, li.length-1);
 				li = li.split(",");
 				for(var i=0; i<li.length; i++){
 					var s = li[i];
@@ -258,9 +259,6 @@ var PDTest = {
 			target.classList.add(status ? "true" : "false");
 			PDTest.currentTest.answers.add(status);
 			document.querySelector("#testnav .btn:nth-of-type("+root.getAttribute("data-n")+")").className += status ? " g" : " r";
-			if(PDTest.currentTest.answers.finished){
-				byId("donebtn").classList.remove("hidden");
-			}
 			
 			setTimeout(function(){
 				var n = root.getAttribute("data-n")-0+1;
