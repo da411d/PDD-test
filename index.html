@@ -12,7 +12,6 @@
 	<div id="panel">
 		<button id="abcd_ab" onclick="PDTest.currentTest.set(this.innerText);" name="abcd" class="btn g select active">AB</button>
 		<button id="abcd_cd" onclick="PDTest.currentTest.set(this.innerText);" name="abcd" class="btn g select">CD</button>
-		<span id="separator"></span>
 		<a name="category" class="btn select active" onclick="PDTest.start(0);">Экзамен</a>
 		<select name="category" id="num" class="btn select" onchange="PDTest.start(1, this.value);">
 			<option selected disabled>Билет по номеру</option>
@@ -61,9 +60,9 @@
 			Вместе: <span id="stats_total">0</span>
 		</div>
 		<div>
-			<a class="btn trigger" onclick="PDTest.restart();">НАЧАТЬ ЗАНОВО</a><br>
-			<a name="category" class="btn r" onclick="PDTest.start(6)">Ошибки</a><br>
-			<a name="category" class="btn g hidden" style="display:none;" onclick="PDTest.stats.clear();alert('Готово!');" >Очистить статистику</a>
+			<a class="btn trigger w100" onclick="PDTest.restart();">НАЧАТЬ ЗАНОВО</a><br>
+			<a name="category" class="btn r w100" onclick="PDTest.start(6);byId('clear').classList.remove('hidden')">Ошибки</a>
+			<a name="category" class="btn g w100 hidden" id="clear" onclick="PDTest.stats.clear();alert('Готово!');" >Очистить статистику</a>
 		</div>
 		<div>
 		</div>

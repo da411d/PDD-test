@@ -181,6 +181,7 @@ var PDTest = {
 		PDTest.stats.render();
 		window.addEventListener("click", this.listener);
 		byId("done").classList.remove("active");
+		byId('clear').classList.add('hidden');
 	},
 	
 	/*
