@@ -72,6 +72,9 @@ option{
 	font-size:14px;
 }
 
+#panel{
+	text-align:center;
+}
 #testnav{
 	width:600px;
 	margin: 16px auto;
@@ -96,6 +99,7 @@ option{
 	position: relative;
 	margin: 0 16px;
 	padding: 16px;
+	padding-bottom:32px;
 	box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
 	overflow:hidden;
 	max-height:1000px;
@@ -119,10 +123,10 @@ option{
 
 #question #num{
 	position:absolute;
-	top:0px;
+	bottom:0px;
 	right:16px;
 	padding:8px;
-	border-radius: 0 0 2px 2px;
+	border-radius: 2px 2px 0 0;
 	background: #ffc000;
 	box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
 }

@@ -143,6 +143,7 @@ var PDTest = {
 						}
 					}
 				}
+				list = shuffle(list);
 				break;
 				
 			case 5: //Марафон
@@ -151,6 +152,7 @@ var PDTest = {
 						list.push(currentTest[i][j]);
 					}
 				}
+				list = shuffle(list);
 				break;
 				
 			case 6: //Помилки
@@ -166,12 +168,11 @@ var PDTest = {
 				break;
 		}
 		
-		list = shuffle(list);
 		var testHTML = "";
 		var testnavHTML = "";
 		for(var i=0; i<list.length; i++){
 			testHTML += list[i].toHTML(i);
-			testnavHTML += '<a onclick="trigCard('+(i+1)+')" name="testnav" class="btn select w">'+(i+1)+'</a>';
+			testnavHTML += ('<a onclick="trigCard('+(i+1)+')" name="testnav" class="btn select w {ACTIVE}">'+(i+1)+'</a>').replace("{ACTIVE}", i==0 ? "active" : "");
 		}
 		testnavHTML += '</span>';
 		byId("test").innerHTML = testHTML.length > 1 ? testHTML : "<h1>Вопросов не найдено</h1>";
