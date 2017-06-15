@@ -6,16 +6,28 @@ define("_ID_", $id);
 $mode = isset($_GET["$"])&&$_GET["$"]=="sbj" ? "sbj" : "li";
 
 if($mode == "sbj"){
-	$subject = get("/{$id}_subject.txt");
-	$subject = explode("\n", $subject);
-	$list = [];
-	foreach($subject as $s){
-		if($s){
-			$s = explode("-", $s);
-			$s[1] = explode(",", $s[1]);
-			$list[] = $s;
+	if($id == "ab"){
+		$subject = get("/subject.txt");
+		$subject = explode("\n", $subject);
+		$list = [];
+		foreach($subject as $s){
+			if($s){
+				$s = explode("-", $s);
+				$s[1] = explode(",", $s[1]);
+				$list[] = $s;
+			}
+		}
+	}else{
+		$subject = get("/subjectCD.txt");
+		$subject = explode("\n", $subject);
+		$list = [];
+		foreach($subject as $s){
+			if($s){
+				$list[] = $s;
+			}
 		}
 	}
+	if(count($subject) < 10)die("%404%");
 	print_r(json_encode($list));
 	die();
 }
@@ -90,7 +102,7 @@ function ls($dir){
 	return $ls;
 }
 function get($path){
-	$t = file_get_contents(dirname(__FILE__).$path);
+	@$t = file_get_contents(dirname(__FILE__).$path);
 	$t = str_replace("\r", "", $t);
 	$t = mb_convert_encoding($t, "UTF-8", "windows-1251");
 	return $t;
