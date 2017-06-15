@@ -68,6 +68,10 @@ var PDTest = {
 		connect(DIR+"?_=ab&$=sbj", function(data){
 			if(data == "%404%"){
 				PDTest.currentTest.subjectAB = false;
+				byId("sbj").outerHTML = "";
+				byId("sbjCD").outerHTML = "";
+				byId("top100").style.width = "calc(25% - 8px)";
+				byId("marafon").style.width = "calc(25% - 8px)";
 				return;
 			}
 			data = JSON.parse(data);
@@ -82,15 +86,17 @@ var PDTest = {
 		connect(DIR+"?_=cd&$=sbj", function(data){
 			if(data == "%404%"){
 				PDTest.currentTest.subjectCD = false;
+				byId("sbj").outerHTML = "";
+				byId("sbjCD").outerHTML = "";
+				byId("top100").style.width = "calc(25% - 8px)";
+				byId("marafon").style.width = "calc(25% - 8px)";
 				return;
 			}
 			data = JSON.parse(data);
-			for(var i=0; i<data.length;i++){
-				data[i] = {
-					title: data[i][0],
-					list: data[i][1]
-				}
-			}
+			data = [{
+				title: "Только CD вопросы",
+				list: data
+			}]
 			PDTest.currentTest.subjectCD = data;
 		});
 	}, 
@@ -106,17 +112,19 @@ var PDTest = {
 			return;
 		}
 		var list = [];
+		var info = "";
 		switch(mode){
 			case 0: //Екзамен
 				for(var i=0; i < currentTest[0].length; i++){
 					var index = ~~(Math.random()*currentTest.length);
 					list.push(currentTest[index][i]);
 				}
+				var info = "Екзамен";
 				break;
 				
 			case 1: //Білет по номеру
-				var index = num > 0 ? num-1 : ~~(Math.random()*currentTest.length);
-				list = currentTest[index];
+				list = currentTest[num-1];
+				var info = num+"-й билет";
 				break;
 				
 			case 2: //Білет по темі
@@ -127,12 +135,14 @@ var PDTest = {
 					let m = s.substr(2, 2)-1;
 					list.push( PDTest.currentTest.get()[n][m] );
 				}
+				var info = PDTest.currentTest.getSubject()[num].title;
 				break;
 				
 			case 3: //Кожне N-те
 				for(var i=0; i < currentTest.length; i++){
 					list.push(currentTest[i][num-1]);
 				}
+				var info = "Каждый "+num+"-й вопрос";
 				break;
 				
 			case 4: //100 складних
@@ -143,6 +153,7 @@ var PDTest = {
 						}
 					}
 				}
+				var info = "100 сложных";
 				list = shuffle(list);
 				break;
 				
@@ -152,6 +163,7 @@ var PDTest = {
 						list.push(currentTest[i][j]);
 					}
 				}
+				var info = "Марафон";
 				list = shuffle(list);
 				break;
 				
@@ -165,6 +177,7 @@ var PDTest = {
 					var abcd = s.substr(0, 2).toUpperCase();
 					list.push( PDTest.currentTest.getQById(s) );
 				}
+				var info = "Ошибки";
 				break;
 		}
 		
@@ -177,12 +190,13 @@ var PDTest = {
 		testnavHTML += '</span>';
 		byId("test").innerHTML = testHTML.length > 1 ? testHTML : "<h1>Вопросов не найдено</h1>";
 		byId("testnav").innerHTML = testnavHTML;
-		
+		byId("currentinfo").innerText = info;
 		PDTest.currentTest.answers.init(list.length);
 		PDTest.stats.render();
 		window.addEventListener("click", this.listener);
 		byId("done").classList.remove("active");
 		byId('clear').classList.add('hidden');
+		updateInfo();
 	},
 	
 	/*
@@ -210,6 +224,7 @@ var PDTest = {
 		byId("done_total").innerText = PDTest.currentTest.answers.total;
 		byId("done_of").innerText = PDTest.currentTest.answers.max;
 		byId("done").classList.add("active");
+		updateInfo(true);
 		
 		var tpl = "";
 		if( good && PDTest.currentTest.answers.false == 0){
@@ -291,7 +306,7 @@ var PDTest = {
 			
 			if(status){
 				PDTest.stats.tryRemoveMistake(root.getAttribute("data-id"));
-				
+								
 			}else{
 				PDTest.stats.addMistake(root.getAttribute("data-id"));
 				if(PDTest.currentTest.mode == 0){
@@ -326,6 +341,14 @@ var PDTest = {
 		set: function(a){
 			this.current = a||false;
 			PDTest.restart();
+			
+			if(this.current == "CD"){
+				byId("sbj").style.display = "none";
+				byId("sbjCD").style.display = "";
+			}else{
+				byId("sbj").style.display = "";
+				byId("sbjCD").style.display = "none";
+			}
 			
 			var list = PDTest.currentTest.get();
 			byId("num").innerHTML = '<option selected disabled>Билет по номеру</option>';
@@ -499,10 +522,6 @@ function Question(data = ""){
 			container.setAttribute("data-n", i+1);
 			container.setAttribute("data-id", this.id);
 			if(isExam)container.setAttribute("data-exam", "true");
-				var num = document.createElement("span");
-				num.id = "num";
-				num.innerText = this.id.substr(0, 2) + " " + this.id.substr(2, 2) + "Б " + this.id.substr(4, 2) + "В";
-				container.appendChild(num);
 				var image = document.createElement("img");
 				image.src = DIR+this.image;
 				image.id = "question_image";
@@ -553,7 +572,17 @@ function trigCard(i){
 	document.querySelectorAll("#test #question").forEach(function(e){
 		e.classList.add("hidden");
 	});
-	document.querySelectorAll("#test #question:nth-of-type("+i+")").forEach(function(e){
-		e.classList.remove("hidden");
-	});
+	document.querySelector("#test #question:nth-of-type("+i+")").classList.remove("hidden");
+	updateInfo();
+}
+function updateInfo(hideme = false){
+	var id = document.querySelector("#test #question:not(.hidden)");
+	if(hideme || !id){
+		byId("currentinfo").style.display = "none";
+		return;
+	}
+	var id = id.getAttribute("data-id");
+	id = id.substr(0, 2) + " " + (id.substr(2, 2)-0) + "Б " + (id.substr(4, 2)-0) + "В";
+	byId("currentinfo").setAttribute("data-text", id);
+	byId("currentinfo").style.display = "";
 }

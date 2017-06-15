@@ -10,37 +10,62 @@
 </head>
 <body>
 	<div id="panel">
-		<button id="abcd_ab" onclick="PDTest.currentTest.set(this.innerText);" name="abcd" class="btn g select active">AB</button>
-		<button id="abcd_cd" onclick="PDTest.currentTest.set(this.innerText);" name="abcd" class="btn g select">CD</button>
-		
-		<a name="category" class="btn select active" onclick="PDTest.start(0);">Экзамен</a>
-		<select name="category" id="num" class="btn select" onchange="
+	<div>
+		<div style="width:calc(25% - 8px);display:inline-block;">
+			<button id="abcd_ab" onclick="PDTest.currentTest.set(this.innerText);" name="abcd" style="width:calc(50% - 5px);margin-left:0px;" class="btn g select active">AB</button>
+			<button id="abcd_cd" onclick="PDTest.currentTest.set(this.innerText);" name="abcd" style="width:calc(50% - 5px);margin-right:0px;" class="btn g select">CD</button>
+		</div>
+		<a name="category" class="btn select active" style="width:calc(25% - 8px);" onclick="
+			PDTest.start(0);
+			byId('num').outerHTML+='';
+			byId('sbj').outerHTML+='';
+			byId('N').outerHTML+='';
+		">Экзамен</a>
+		<select name="category" id="num" class="btn select" style="width:calc(25% - 8px);" onchange="
 			PDTest.start(1, this.value);
 			byId('sbj').outerHTML+='';
-			byId('sbj').style.width='';
 			byId('N').outerHTML+='';
 		">
 			<option selected disabled>Билет по номеру</option>
 		</select>
-		<select name="category" id="sbj" class="btn select" onchange="
-			PDTest.start(2, this.value);
-			byId('num').outerHTML+='';
-			byId('N').outerHTML+='';
-			byId('sbj').style.width = 20+PDTest.currentTest.getSubject()[this.value].title.length*9+'px'
-			">
-			<option selected disabled>Билет по теме</option>
-		</select>
-		<select name="category" id="N" class="btn select" onchange="
+		<select name="category" id="N" class="btn select" style="width:calc(25% - 8px);" onchange="
 			PDTest.start(3, this.value);
 			byId('num').outerHTML+='';
 			byId('sbj').outerHTML+='';
-			byId('sbj').style.width='';
 		">
 			<option selected disabled>Каждый N-й вопрос</option><option value="1">Каждый 1-й</option><option value="2">Каждый 2-й</option><option value="3">Каждый 3-й</option><option value="4">Каждый 4-й</option><option value="5">Каждый 5-й</option><option value="6">Каждый 6-й</option><option value="7">Каждый 7-й</option><option value="8">Каждый 8-й</option><option value="9">Каждый 9-й</option><option value="10">Каждый 10-й</option><option value="11">Каждый 11-й</option><option value="12">Каждый 12-й</option><option value="13">Каждый 13-й</option><option value="14">Каждый 14-й</option><option value="15">Каждый 15-й</option><option value="16">Каждый 16-й</option><option value="17">Каждый 17-й</option><option value="18">Каждый 18-й</option><option value="19">Каждый 19-й</option><option value="20">Каждый 20-й</option>
 		</select>
-		<a name="category" class="btn select"  onclick="PDTest.start(4)">100 сложных</a>
-		<a name="category" class="btn select"  onclick="PDTest.start(5)">Марафон</a>
 	</div>
+	
+	<div>
+		<select name="category" id="sbj" class="btn select" style="width:calc(50% - 8px);" onchange="
+			PDTest.start(2, this.value);
+			byId('num').outerHTML+='';
+			byId('N').outerHTML+='';
+			">
+			<option selected disabled>Билет по теме</option>
+		</select>
+		<a name="category" id="sbjCD" class="btn select" style="display:none;width:calc(50% - 8px);" onclick="
+			PDTest.start(2, 0);
+			byId('num').outerHTML+='';
+			byId('sbj').outerHTML+='';
+			byId('N').outerHTML+='';
+		">Только  CD вопросы</a>
+		<a name="category" id="top100" class="btn select" style="width:calc(25% - 8px);" onclick="
+			PDTest.start(4);
+			byId('num').outerHTML+='';
+			byId('sbj').outerHTML+='';
+			byId('N').outerHTML+='';
+		">100 сложных</a>
+		<a name="category" id="marafon" class="btn select" style="width:calc(25% - 8px);" onclick="
+			PDTest.start(5);
+			byId('num').outerHTML+='';
+			byId('sbj').outerHTML+='';
+			byId('N').outerHTML+='';
+		">Марафон</a>
+	</div>
+	</div>
+	<span id="currentinfo">Загрузка...</span>
 	<div id="test"></div>
 	<div id="testnav"></div>
 	
@@ -77,7 +102,7 @@
 		</div>
 		<div>
 			<a class="btn trigger w100" onclick="PDTest.restart();">НАЧАТЬ ЗАНОВО</a><br>
-			<a name="category" class="btn r w100" onclick="PDTest.start(6);byId('clear').classList.remove('hidden')">Ошибки</a>
+			<a name="category" class="btn r w100" onclick="PDTest.start(6);byId('clear').classList.remove('hidden');PDTest.restart();">Ошибки</a>
 			<a name="category" class="btn g w100 hidden" id="clear" onclick="PDTest.stats.clear();alert('Готово!');" >Очистить статистику</a>
 		</div>
 		<div>

@@ -1,6 +1,7 @@
 body{
 	font-family: Arial, Sans-serif;
 	margin:0px;
+	text-align:center;
 }
 * {
 	transition-duration: 0.4s;
@@ -22,7 +23,7 @@ body{
 }
 
 
-button, .btn,select{
+button, .btn, select{
 	display:inline-block;
 	min-width: 150px;
 	margin: 4px 8px;
@@ -35,6 +36,9 @@ button, .btn,select{
 	border: none;
 	cursor: pointer;
 	font-size:14px;
+}
+select{
+	padding: 7px!important;
 }
 button.w100, .btn.w100{
 	min-width:0px;
@@ -50,7 +54,7 @@ button.hidden, .btn.hidden{
 	margin:0px;
 }
 button.select, .btn.select{
-	min-width: 50px;
+	min-width: 30px;
 	margin: 4px 2px;
 }
 button.w, .btn.w{background: #ffffff;color:#000000;} button.w.active, .btn.w.active{background: #dfdfdf;}
@@ -72,21 +76,36 @@ option{
 	padding:4px;
 	font-size:14px;
 }
-
 #panel{
-	text-align:center;
-}
-#testnav{
-	width:600px;
+	width:750px;
 	margin: 16px auto;
-	text-align:left;
 }
-#testnav .btn:nth-child(5n){
+
+#testnav{
+	width:750px;
+	margin: 16px auto;
+}
+#testnav .btn.select{
+	text-align:center;
+	font-size:14px;
+	width: 30px;
+	padding: 8px 0;
+}
+#testnav .btn:nth-child(5n):not(:nth-child(20n)){
 	margin-right:16px;
 }
 
-#h1{
-	text-align:center;
+#currentinfo{
+	display:inline-block;
+	margin:16px;
+	padding:8px;
+	border-radius: 2px 2px 0 0;
+	background: #ffc000;
+	box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+}
+#currentinfo:after {
+	content: '';
+	content: ' - ' attr(data-text);
 }
 #test{
 	position: relative;
@@ -94,12 +113,10 @@ option{
 	width: 750px;
 	max-width: 100%;
 	margin: 16px auto;
-	text-align: center;
 }
 #question{
 	position: relative;
 	margin: 0 16px;
-	margin-top: 48px;
 	padding: 16px;
 	box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
 	max-height:1000px;
@@ -115,17 +132,6 @@ option{
 }
 #question.answered.false{
 	background: #ffeeee;
-}
-
-#question #num{
-	position:absolute;
-	top:-32px;
-	left:16px;
-	height:32px;
-	padding:8px;
-	border-radius: 2px 2px 0 0;
-	background: #ffc000;
-	box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
 }
 
 #question #question_image{
