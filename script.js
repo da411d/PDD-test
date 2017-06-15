@@ -224,6 +224,7 @@ var PDTest = {
 		byId("done_total").innerText = PDTest.currentTest.answers.total;
 		byId("done_of").innerText = PDTest.currentTest.answers.max;
 		byId("done").classList.add("active");
+		byId('restart').classList.remove('hidden');
 		updateInfo(true);
 		
 		var tpl = "";

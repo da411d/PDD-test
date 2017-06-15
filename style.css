@@ -49,9 +49,7 @@ button.active, .btn.active{
 	box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6);
 }
 button.hidden, .btn.hidden{
-	max-height:0px;
-	padding:0px;
-	margin:0px;
+	display:none;
 }
 button.select, .btn.select{
 	min-width: 30px;
@@ -178,8 +176,9 @@ option{
 
 
 #sidebar{
-	width: calc(100% - 32px);
-	margin:16px;
+	width: 750px;
+	margin:auto;
+	margin-bottom:16px;
 	padding:8px;
 	background: #ffffff;
 	box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.5);

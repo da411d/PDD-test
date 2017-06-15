@@ -101,11 +101,16 @@
 			Вместе: <span id="stats_total">0</span>
 		</div>
 		<div>
-			<a class="btn trigger w100" onclick="PDTest.restart();">НАЧАТЬ ЗАНОВО</a><br>
-			<a name="category" class="btn r w100" onclick="PDTest.start(6);byId('clear').classList.remove('hidden');PDTest.restart();">Ошибки</a>
-			<a name="category" class="btn g w100 hidden" id="clear" onclick="PDTest.stats.clear();alert('Готово!');" >Очистить статистику</a>
-		</div>
-		<div>
+			<a class="btn trigger w100" id="restart" onclick="PDTest.restart();">НАЧАТЬ ЗАНОВО</a>
+			<a name="category" class="btn r w100" onclick="
+				PDTest.start(6);
+				byId('clear').classList.remove('hidden');
+				byId('restart').classList.add('hidden');
+			">Ошибки</a>
+			<a name="category" class="btn g w100 hidden" id="clear" onclick="
+				PDTest.stats.clear();
+				alert('Готово!');
+				PDTest.restart();" >Очистить статистику</a>
 		</div>
 	</div>
 </body>
