@@ -250,7 +250,7 @@ var PDTest = {
 		for(var i=0; i<list.length; i++){
 			var m = PDTest.currentTest.answers.max+i+1;
 			testHTML += list[i].toHTML(m-1, 1);
-			testnavHTML += '<button onclick="trigCard('+m+')" name="testnav" class="btn select d">'+m+'</button>';
+			testnavHTML += '<button onclick="trigCard('+m+')" name="testnav" class="btn select y">'+m+'</button>';
 		}
 		byId("test").innerHTML += testHTML;
 		byId("testnav").innerHTML += testnavHTML;
@@ -281,15 +281,13 @@ var PDTest = {
 			PDTest.currentTest.answers.add(status);
 			document.querySelector("#testnav .btn:nth-child("+root.getAttribute("data-n")+")").className += status ? " g" : " r";
 			
-			setTimeout(function(){
-				var n = root.getAttribute("data-n")-0+1;
-				if(n > PDTest.currentTest.answers.max || PDTest.currentTest.answers.finished)return;
-				trigCard(n);
-				document.querySelectorAll("#testnav .btn").forEach(function(e){
-					e.classList.remove("active");
-				});
-				document.querySelector("#testnav .btn:nth-child("+n+")").classList.add("active");
-			}, 1000);
+			var n = root.getAttribute("data-n")-0+1;
+			if(n > PDTest.currentTest.answers.max || PDTest.currentTest.answers.finished)return;
+			trigCard(n);
+			document.querySelectorAll("#testnav .btn").forEach(function(e){
+				e.classList.remove("active");
+			});
+			document.querySelector("#testnav .btn:nth-child("+n+")").classList.add("active");
 			
 			if(status){
 				PDTest.stats.tryRemoveMistake(root.getAttribute("data-id"));
@@ -524,7 +522,7 @@ function Question(data = ""){
 						if(i==0)li.setAttribute("data-true", "true");
 						ans[i] = li;
 					}
-					ans.sort(function(){return Math.random()<0.5});
+					ans = shuffle(ans);;
 					for(var i=0; i<ans.length; i++){
 						answers.appendChild(ans[i]);
 					}

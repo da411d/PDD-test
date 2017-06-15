@@ -55,6 +55,7 @@ button.select, .btn.select{
 }
 button.w, .btn.w{background: #ffffff;color:#000000;} button.w.active, .btn.w.active{background: #dfdfdf;}
 button.d, .btn.d{background: #eeeeee;color:#000000;} button.d.active, .btn.d.active{background: #d8d8d8;}
+button.y, .btn.y{background: #ffff88;color:#000000;} button.y.active, .btn.y.active{background: #eeee44;}
 
 button.r, .btn.r{background: #ff8888;} button.r.active, .btn.r.active{background: #ff4444;}
 button.g, .btn.g{background: #aed581;} button.g.active, .btn.g.active{background: #4caf50;}
@@ -98,21 +99,16 @@ option{
 #question{
 	position: relative;
 	margin: 0 16px;
+	margin-top: 48px;
 	padding: 16px;
-	padding-bottom:32px;
 	box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
-	overflow:hidden;
 	max-height:1000px;
 	opacity: 1;
 	max-height: 200vh;
 	text-align:left;
 }
 #question.hidden{
-	max-height: 0vh;
-	opacity: 0;
-	pointer-events: none;
-	margin: 0px 16px;
-	padding: 0px 16px;
+	display:none;
 }
 #question.answered.true{
 	background: #eeffee;
@@ -123,8 +119,9 @@ option{
 
 #question #num{
 	position:absolute;
-	bottom:0px;
-	right:16px;
+	top:-32px;
+	left:16px;
+	height:32px;
 	padding:8px;
 	border-radius: 2px 2px 0 0;
 	background: #ffc000;
