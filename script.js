@@ -30,59 +30,62 @@ function connect(u, f, p){
 
 var DIR = "data/";
 
-var PDTest = {
+var PDDTest = {
 	/*
 		INIT: Скачуєм всі тести і список картинок. Формуєм об'єкти тестів.
 	*/
 	init: function(){
 		connect(DIR+"?_=ab", function(data){
 			if(data == "%404%"){
-				PDTest.currentTest.AB = false;
+				PDDTest.currentTest.AB = false;
 				byId("abcd_ab").outerHTML = "";
 				return;
 			}
 			data = JSON.parse(data);
-			for(var i in data){
-				for(var j in data[i]){
+			for(var i=0; i<data.length; i++){
+				for(var j=0; j<data[i].length; j++){
 					data[i][j] = new Question(data[i][j]);
 				}
 			}
-			PDTest.currentTest.AB = PDTest.currentTest.AB.concat(data);
-			PDTest.currentTest.set("AB");
+			PDDTest.currentTest.AB = PDDTest.currentTest.AB.concat(data);
+			PDDTest.currentTest.set("AB");
 		});
 		connect(DIR+"?_=cd", function(data){
 			if(data == "%404%"){
-				PDTest.currentTest.CD = false;
+				PDDTest.currentTest.CD = false;
 				byId("abcd_cd").outerHTML = "";
 				return;
 			}
 			data = JSON.parse(data);
-			for(var i in data){
-				for(var j in data[i]){
+			for(var i=0; i<data.length; i++){
+				for(var j=0; j<data[i].length; j++){
 					data[i][j] = new Question(data[i][j]);
 				}
 			}
-			PDTest.currentTest.CD = PDTest.currentTest.CD.concat(data);
+			PDDTest.currentTest.CD = PDDTest.currentTest.CD.concat(data);
 		});
 		
 		connect(DIR+"?_=ab&$=sbj", function(data){
 			if(data == "%404%"){
-				PDTest.currentTest.subjectAB = false;
-				byId("sbjs").style.display = "none";
+				PDDTest.currentTest.subjectAB = false;
+				byId("sbj").outerHTML = "";
+				byId("sbjCD").outerHTML = "";
+				byId("top100").style.width = "calc(25% - 8px)";
+				byId("marafon").style.width = "calc(25% - 8px)";
 				return;
 			}
 			data = JSON.parse(data);
-			for(var i in data){
+			for(var i=0; i<data.length;i++){
 				data[i] = {
 					title: data[i][0],
 					list: data[i][1]
 				}
 			}
-			PDTest.currentTest.subjectAB = data;
+			PDDTest.currentTest.subjectAB = data;
 		});
 		connect(DIR+"?_=cd&$=sbj", function(data){
 			if(data == "%404%"){
-				PDTest.currentTest.subjectCD = false;
+				PDDTest.currentTest.subjectCD = false;
 				byId("sbjs").style.display = "none";
 				return;
 			}
@@ -91,7 +94,7 @@ var PDTest = {
 				title: "Только CD вопросы",
 				list: data
 			}]
-			PDTest.currentTest.subjectCD = data;
+			PDDTest.currentTest.subjectCD = data;
 		});
 	}, 
 	
@@ -99,9 +102,9 @@ var PDTest = {
 		START: Починаєм тест
 	*/
 	start: function(mode, num = -1){
-		PDTest.currentTest.mode = mode;
-		PDTest.currentTest.startparam = num;
-		var currentTest = PDTest.currentTest.get();
+		PDDTest.currentTest.mode = mode;
+		PDDTest.currentTest.startparam = num;
+		var currentTest = PDDTest.currentTest.get();
 		if(!currentTest || currentTest.length == 0){
 			return;
 		}
@@ -109,7 +112,7 @@ var PDTest = {
 		var info = "";
 		switch(mode){
 			case 0: //Екзамен
-				for(var i in currentTest[index]){
+				for(var i=0; i < currentTest[0].length; i++){
 					var index = ~~(Math.random()*currentTest.length);
 					list.push(currentTest[index][i]);
 				}
@@ -122,26 +125,26 @@ var PDTest = {
 				break;
 				
 			case 2: //Білет по темі
-				var subject = PDTest.currentTest.getSubject()[num].list;
-				for(var i in subject){
+				var subject = PDDTest.currentTest.getSubject()[num].list;
+				for(var i=0; i<subject.length; i++){
 					var s = subject[i];
 					let n = s.substr(0, 2)-1;
 					let m = s.substr(2, 2)-1;
-					list.push( PDTest.currentTest.get()[n][m] );
+					list.push( PDDTest.currentTest.get()[n][m] );
 				}
-				var info = PDTest.currentTest.getSubject()[num].title;
+				var info = PDDTest.currentTest.getSubject()[num].title;
 				break;
 				
 			case 3: //Кожне N-те
-				for(var i in currentTest){
+				for(var i=0; i < currentTest.length; i++){
 					list.push(currentTest[i][num-1]);
 				}
 				var info = "Каждый "+num+"-й вопрос";
 				break;
 				
 			case 4: //100 складних
-				for(var i in currentTest){
-					for(var j in currentTest[i]){
+				for(var i=0; i < currentTest.length; i++){
+					for(var j=0; j < currentTest[i].length; j++){
 						if(currentTest[i][j].difficult){
 							list.push(currentTest[i][j]);
 						}
@@ -152,8 +155,8 @@ var PDTest = {
 				break;
 				
 			case 5: //Марафон
-				for(var i in currentTest){
-					for(var j in currentTest[i]){
+				for(var i=0; i < currentTest.length; i++){
+					for(var j=0; j < currentTest[i].length; j++){
 						list.push(currentTest[i][j]);
 					}
 				}
@@ -162,14 +165,14 @@ var PDTest = {
 				break;
 				
 			case 6: //Помилки
-				var li = localStorage.getItem("PDTest.mistakes")||"";
+				var li = localStorage.getItem("PDDTest.mistakes")||"";
 				if(li.length<4)break;
 				if(li[li.length-1] == ",")li = li.substr(0, li.length-1);
 				li = li.split(",");
-				for(var i in li){
+				for(var i=0; i<li.length; i++){
 					var s = li[i];
 					var abcd = s.substr(0, 2).toUpperCase();
-					list.push( PDTest.currentTest.getQById(s) );
+					list.push( PDDTest.currentTest.getQById(s) );
 				}
 				var info = "Ошибки";
 				break;
@@ -177,7 +180,7 @@ var PDTest = {
 		
 		var testHTML = "";
 		var testnavHTML = "";
-		for(var i in list){
+		for(var i=0; i<list.length; i++){
 			testHTML += list[i].toHTML(i);
 			testnavHTML += ('<a onclick="trigCard('+(i+1)+')" name="testnav" class="btn select w {ACTIVE}">'+(i+1)+'</a>').replace("{ACTIVE}", i==0 ? "active" : "");
 		}
@@ -185,8 +188,8 @@ var PDTest = {
 		byId("test").innerHTML = testHTML.length > 1 ? testHTML : "<h1>Вопросов не найдено</h1>";
 		byId("testnav").innerHTML = testnavHTML;
 		byId("currentinfo").innerText = info;
-		PDTest.currentTest.answers.init(list.length);
-		PDTest.stats.render();
+		PDDTest.currentTest.answers.init(list.length);
+		PDDTest.stats.render();
 		window.addEventListener("click", this.listener);
 		byId("done").classList.remove("active");
 		byId('clear').classList.add('hidden');
@@ -197,8 +200,8 @@ var PDTest = {
 		RESTART: Перезапускаєм тест
 	*/
 	restart: function(){
-		PDTest.stop();
-		PDTest.start(PDTest.currentTest.mode, PDTest.currentTest.startparam);
+		PDDTest.stop();
+		PDDTest.start(PDDTest.currentTest.mode, PDDTest.currentTest.startparam);
 	},
 	
 	/*
@@ -213,19 +216,19 @@ var PDTest = {
 		});
 		
 		//Виводим
-		byId("done_true").innerText = PDTest.currentTest.answers.true;
-		byId("done_false").innerText = PDTest.currentTest.answers.false;
-		byId("done_total").innerText = PDTest.currentTest.answers.total;
-		byId("done_of").innerText = PDTest.currentTest.answers.max;
+		byId("done_true").innerText = PDDTest.currentTest.answers.true;
+		byId("done_false").innerText = PDDTest.currentTest.answers.false;
+		byId("done_total").innerText = PDDTest.currentTest.answers.total;
+		byId("done_of").innerText = PDDTest.currentTest.answers.max;
 		byId("done").classList.add("active");
 		byId('restart').classList.remove('hidden');
 		updateInfo(true);
 		
 		var tpl = "";
-		if( good && PDTest.currentTest.answers.false == 0){
+		if( good && PDDTest.currentTest.answers.false == 0){
 			tpl = [
 				"<h1>Поздравляем!</h1>",
-				"Экзамен на категорию "+PDTest.currentTest.current+" сдан без ошибок!"
+				"Экзамен на категорию "+PDDTest.currentTest.current+" сдан без ошибок!"
 			].join("");
 		}else if(!good){
 			tpl = [
@@ -245,7 +248,7 @@ var PDTest = {
 		ADD
 	*/
 	add: function(current, n){
-		var currentTest = PDTest.currentTest.get();
+		var currentTest = PDDTest.currentTest.get();
 		if(!currentTest || currentTest.length == 0){
 			return;
 		}
@@ -258,14 +261,14 @@ var PDTest = {
 		var testHTML = "";
 		var testnavHTML = "";
 		for(var i=0; i<list.length; i++){
-			var m = PDTest.currentTest.answers.max+i+1;
+			var m = PDDTest.currentTest.answers.max+i+1;
 			testHTML += list[i].toHTML(m-1, 1);
 			testnavHTML += '<button onclick="trigCard('+m+')" name="testnav" class="btn select y">'+m+'</button>';
 		}
 		byId("test").innerHTML += testHTML;
 		byId("testnav").innerHTML += testnavHTML;
 		
-		PDTest.currentTest.answers.max += n;
+		PDDTest.currentTest.answers.max += n;
 	},
 	
 	/*
@@ -273,7 +276,7 @@ var PDTest = {
 	*/
 	listener: function(e){
 		var target = e.target;
-		if(target.id.indexOf("question") == -1)return;
+		if(target.id.indexOf("question") == -1)return; //Если не наш человек
 		
 		var root = target;
 		while(root.id != "question"){
@@ -281,18 +284,18 @@ var PDTest = {
 		}
 		
 		if(target.id == "question_answer"){
-			if(PDTest.currentTest.mode == 0 && root.classList.contains("answered"))return;
+			if(PDDTest.currentTest.mode == 0 && root.classList.contains("answered"))return;
 			
 			
 			root.classList.add("answered");
 			var status = target.getAttribute("data-true") == "true";
 			root.classList.add(status ? "true" : "false");
 			target.classList.add(status ? "true" : "false");
-			PDTest.currentTest.answers.add(status);
+			PDDTest.currentTest.answers.add(status);
 			document.querySelector("#testnav .btn:nth-child("+root.getAttribute("data-n")+")").className += status ? " g" : " r";
 			
 			var n = root.getAttribute("data-n")-0+1;
-			if(n > PDTest.currentTest.answers.max || PDTest.currentTest.answers.finished)return;
+			if(n > PDDTest.currentTest.answers.max || PDDTest.currentTest.answers.finished)return;
 			trigCard(n);
 			document.querySelectorAll("#testnav .btn").forEach(function(e){
 				e.classList.remove("active");
@@ -300,17 +303,17 @@ var PDTest = {
 			document.querySelector("#testnav .btn:nth-child("+n+")").classList.add("active");
 			
 			if(status){
-				PDTest.stats.tryRemoveMistake(root.getAttribute("data-id"));
+				PDDTest.stats.tryRemoveMistake(root.getAttribute("data-id"));
 								
 			}else{
-				PDTest.stats.addMistake(root.getAttribute("data-id"));
-				if(PDTest.currentTest.mode == 0){
-					if(root.getAttribute("data-exam") == "true" || PDTest.currentTest.answers.false >= 3){
-						PDTest.currentTest.answers.finished = true;
-						PDTest.stop(false);
+				PDDTest.stats.addMistake(root.getAttribute("data-id"));
+				if(PDDTest.currentTest.mode == 0){
+					if(root.getAttribute("data-exam") == "true" || PDDTest.currentTest.answers.false >= 3){
+						PDDTest.currentTest.answers.finished = true;
+						PDDTest.stop(false);
 						return;
 					}
-					PDTest.add(root.getAttribute("data-id").substr(4, 2)-0, 5);
+					PDDTest.add(root.getAttribute("data-id").substr(4, 2)-0, 5);
 				}
 			}
 		}
@@ -335,7 +338,7 @@ var PDTest = {
 		},
 		set: function(a){
 			this.current = a||false;
-			PDTest.restart();
+			PDDTest.restart();
 			
 			if(this.current == "CD"){
 				byId("sbj").style.display = "none";
@@ -345,14 +348,14 @@ var PDTest = {
 				byId("sbjCD").style.display = "none";
 			}
 			
-			var list = PDTest.currentTest.get();
+			var list = PDDTest.currentTest.get();
 			byId("num").innerHTML = '<option selected disabled>Билет по номеру</option>';
-			for(var l in list){
+			for(l in list){
 				let i = l-0+1;
 				byId("num").innerHTML += '<option value="'+i+'">'+i+'-й билет</option>';
 			}
 			
-			var list = PDTest.currentTest.getSubject();
+			var list = PDDTest.currentTest.getSubject();
 			byId("sbj").innerHTML = '<option selected disabled>Билет по теме</option>';
 			for(var i=0; i<list.length; i++){
 				var l = list[i];
@@ -377,7 +380,7 @@ var PDTest = {
 				var c = p3-1;
 			}
 			try{
-				var r = PDTest.currentTest[a][b][c];
+				var r = PDDTest.currentTest[a][b][c];
 			}catch(e){
 				var r = {toHTML:function(){return"";}};
 			}
@@ -390,7 +393,7 @@ var PDTest = {
 			max: 0,
 			finished: false,
 			add: function(n){
-				PDTest.stats.add(n);
+				PDDTest.stats.add(n);
 				if(n == 1){
 					this.true++;
 				}else{
@@ -418,7 +421,7 @@ var PDTest = {
 				
 				if(this.finished){
 					setTimeout(function(){
-						PDTest.stop();
+						PDDTest.stop();
 					}, 2000);
 				}
 			}
@@ -433,7 +436,7 @@ var PDTest = {
 		false: 0,
 		total: 0,
 		add: function(n){
-			var data = localStorage.getItem("PDTest.stats") || "0:0:0";
+			var data = localStorage.getItem("PDDTest.stats") || "0:0:0";
 			data = data.split(":");
 			
 			this.true = data[0]-0;
@@ -452,12 +455,12 @@ var PDTest = {
 				this.false,
 				this.total
 			];
-			localStorage.setItem("PDTest.stats", data.join(":"));
+			localStorage.setItem("PDDTest.stats", data.join(":"));
 			
 			this.render();
 		},
 		render: function(){
-			var data = localStorage.getItem("PDTest.stats") || "0:0:0";
+			var data = localStorage.getItem("PDDTest.stats") || "0:0:0";
 			data = data.split(":");
 			
 			this.true = data[0]-0;
@@ -469,34 +472,34 @@ var PDTest = {
 			byId("stats_total").innerText = this.total;
 		},
 		clear: function(){
-			localStorage.setItem("PDTest.stats", "0:0:0");
-			localStorage.setItem("PDTest.mistakes", "");
+			localStorage.setItem("PDDTest.stats", "0:0:0");
+			localStorage.setItem("PDDTest.mistakes", "");
 			this.true = this.false = this.total = 0;
 			this.render();
 		},
 		addMistake: function(t){
-			var data = localStorage.getItem("PDTest.mistakes") || "";
+			var data = localStorage.getItem("PDDTest.mistakes") || "";
 			if(data.indexOf(t) == -1){
 				data = data.split(",");
 				data.push(t);
 				data = data.join(",");
 				if(data[0] == ",")data = data.substr(1);
-				localStorage.setItem("PDTest.mistakes", data);
+				localStorage.setItem("PDDTest.mistakes", data);
 			}
 		},
 		tryRemoveMistake: function(t){
-			var data = localStorage.getItem("PDTest.mistakes") || "";
+			var data = localStorage.getItem("PDDTest.mistakes") || "";
 			if(data.indexOf(t) > -1){
 				data = data.split(t).join("");
 				data = data.split(",,").join(",");
 				if(data[0] == ",")data = data.substr(1);
-				localStorage.setItem("PDTest.mistakes", data);
+				localStorage.setItem("PDDTest.mistakes", data);
 			}
 		}
 	}
 };
 
-PDTest.init();
+PDDTest.init();
 
 ///////////
 function Question(data = ""){

@@ -9,40 +9,41 @@
 	<script src='script.js'></script>
 </head>
 <body>
+<div id="PDDTest">
 	<div id="panel">
 		<div>
 			<div>
-				<button id="abcd_ab" onclick="PDTest.currentTest.set(this.innerText);" name="abcd" class="btn w100 g select active">AB</button>
+				<button id="abcd_ab" onclick="PDDTest.currentTest.set(this.innerText);" name="abcd" class="btn w100 g select active">AB</button>
 			</div>
 			<div>
-				<button id="abcd_cd" onclick="PDTest.currentTest.set(this.innerText);" name="abcd" class="btn w100 g select">CD</button>
+				<button id="abcd_cd" onclick="PDDTest.currentTest.set(this.innerText);" name="abcd" class="btn w100 g select">CD</button>
 			</div>
 			<div>
-				<a name="category" class="btn w100 select active" onclick="PDTest.start(0);resetButtons(this);">Экзамен</a>
+				<a name="category" class="btn w100 select active" onclick="PDDTest.start(0);resetButtons(this);">Экзамен</a>
 			</div>
 			<div>
-				<select name="category" id="num" class="btn w100 select" onchange="PDTest.start(1, this.value);resetButtons(this);">
+				<select name="category" id="num" class="btn w100 select" onchange="PDDTest.start(1, this.value);resetButtons(this);">
 					<option selected disabled>Билет по номеру</option>
 				</select>
 			</div>
 			<div>
-				<select name="category" id="N" class="btn w100 select" onchange="PDTest.start(3, this.value);resetButtons(this);">
+				<select name="category" id="N" class="btn w100 select" onchange="PDDTest.start(3, this.value);resetButtons(this);">
 					<option selected disabled>Каждый N-й вопрос</option><option value="1">Каждый 1-й</option><option value="2">Каждый 2-й</option><option value="3">Каждый 3-й</option><option value="4">Каждый 4-й</option><option value="5">Каждый 5-й</option><option value="6">Каждый 6-й</option><option value="7">Каждый 7-й</option><option value="8">Каждый 8-й</option><option value="9">Каждый 9-й</option><option value="10">Каждый 10-й</option><option value="11">Каждый 11-й</option><option value="12">Каждый 12-й</option><option value="13">Каждый 13-й</option><option value="14">Каждый 14-й</option><option value="15">Каждый 15-й</option><option value="16">Каждый 16-й</option><option value="17">Каждый 17-й</option><option value="18">Каждый 18-й</option><option value="19">Каждый 19-й</option><option value="20">Каждый 20-й</option>
 				</select>
 			</div>
 		</div>
 		<div>
 			<div id="sbjs" style="width: 50%;">
-				<select name="category" id="sbj" class="btn w100 select" onchange="PDTest.start(2, this.value);resetButtons(this);">
+				<select name="category" id="sbj" class="btn w100 select" onchange="PDDTest.start(2, this.value);resetButtons(this);">
 					<option selected disabled>Билет по теме</option>
 				</select>
-				<a name="category" id="sbjCD" class="btn w100 select" onclick="PDTest.start(2, 0);resetButtons(this);" style="display:none;">Только  CD вопросы</a>
+				<a name="category" id="sbjCD" class="btn w100 select" onclick="PDDTest.start(2, 0);resetButtons(this);" style="display:none;">Только  CD вопросы</a>
 			</div>
 			<div>
-				<a name="category" id="top100" class="btn w100 select" onclick="PDTest.start(4);resetButtons(this);">100 сложных</a>
+				<a name="category" id="top100" class="btn w100 select" onclick="PDDTest.start(4);resetButtons(this);">100 сложных</a>
 			</div>
 			<div>
-				<a name="category" id="marafon" class="btn w100 select" onclick="PDTest.start(5);resetButtons(this);">Марафон</a>
+				<a name="category" id="marafon" class="btn w100 select" onclick="PDDTest.start(5);resetButtons(this);">Марафон</a>
 			</div>
 		</div>
 	</div>
@@ -74,7 +75,7 @@
 			<b>Вместе: </b><span id="done_total">0</span>/<span id="done_of">0</span>
 		</p>
 		<p >
-			<a class="btn select trigger" onclick="PDTest.restart();">Пройти заново</a>
+			<a class="btn select trigger" onclick="PDDTest.restart();">Пройти заново</a>
 		</p>
 	</div>
 	<div id="sidebar">
@@ -91,17 +92,18 @@
 			Вместе: <span id="stats_total">0</span>
 		</div>
 		<div>
-			<a class="btn trigger w100" id="restart" onclick="PDTest.restart();">НАЧАТЬ ЗАНОВО</a>
+			<a class="btn trigger w100" id="restart" onclick="PDDTest.restart();">НАЧАТЬ ЗАНОВО</a>
 			<a name="category" class="btn r w100" onclick="
-				PDTest.start(6);
+				PDDTest.start(6);
 				byId('clear').classList.remove('hidden');
 				byId('restart').classList.add('hidden');
 			">Ошибки</a>
 			<a name="category" class="btn g w100 hidden" id="clear" onclick="
-				PDTest.stats.clear();
+				PDDTest.stats.clear();
 				alert('Готово!');
-				PDTest.restart();" >Очистить статистику</a>
+				PDDTest.restart();" >Очистить статистику</a>
 		</div>
 	</div>
+</div>
 </body>
 </html>

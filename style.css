@@ -1,15 +1,16 @@
-body{
+#PDDTest{
 	font-family: Arial, Sans-serif;
 	margin:0px;
 	text-align:center;
 }
-* {
+
+#PDDTest * {
 	transition-duration: 0.4s;
 	transition-property: width,height,max-height,box-shadow,text-shadow,border,background,top,left,right,bottom,opacity,transform,zoom;
 	outline: none;
 	box-sizing: border-box;
+	line-height: initial;
 }
-
 .spoiler{
 	max-height:0px;
 	margin: 0px auto;
@@ -120,7 +121,7 @@ option{
 }
 #question{
 	position: relative;
-	margin: 0 16px;
+	margin: 0px;
 	padding: 16px;
 	box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
 	max-height:1000px;
