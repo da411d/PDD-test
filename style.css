@@ -25,7 +25,7 @@ body{
 
 button, .btn, select{
 	display:inline-block;
-	min-width: 150px;
+	height: 32px;
 	margin: 4px 8px;
 	padding: 8px;
 	background:#8888ff;
@@ -95,7 +95,7 @@ option{
 
 #currentinfo{
 	display:inline-block;
-	margin:16px;
+	margin: auto 16px;
 	padding:8px;
 	border-radius: 2px 2px 0 0;
 	background: #ffc000;
@@ -173,7 +173,6 @@ option{
 #question:not(.answered) #question_tip.hidden{
 	max-height:0px;
 }
-
 
 #sidebar{
 	width: 750px;
