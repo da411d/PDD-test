@@ -78,7 +78,13 @@ option{
 	width:750px;
 	margin: 16px auto;
 }
-
+#panel > div {
+	display:table;
+	width: 100%;
+}
+#panel > div > div {
+	display:table-cell;
+}
 #testnav{
 	width:750px;
 	margin: 16px auto;
