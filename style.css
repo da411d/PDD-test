@@ -45,8 +45,8 @@ button.w100, .btn.w100{
 	width:calc(100% - 16px);
 }
 button.active, .btn.active{
-	background: #4444ff;
-	box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6);
+	background: #4444bb;
+	box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.6);
 }
 button.hidden, .btn.hidden{
 	display:none;

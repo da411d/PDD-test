@@ -48,9 +48,13 @@ foreach($image as $i){
 }
 
 foreach($list as $l){
-	$n = substr($l, 0, 2)-1;
-	$m = substr($l, 2, 2)-1;
+	if(strlen($l) != 8){
+		continue;
+	}
+	$n = (int)substr($l, 0, 2)-1;
+	$m = (int)substr($l, 2, 2)-1;
 	if(!$test[$n])$test[$n] = [];
+	if($test[$n] === false)continue;
 	
 	$test[$n][$m] = parseTest(
 		get("/{$id}_text/{$l}"), 
@@ -58,10 +62,22 @@ foreach($list as $l){
 		$l
 	);
 }
+foreach($test as $k => $v){
+	$count = 0;
+	foreach($v as $t){
+		if($t){
+			$count++;
+		}
+	}
+	if($count < 20){
+		unset($test[$k]);
+	}
+}
 echo json_encode($test);
 
 function parseTest($t, $img="", $id){
 	global $difficult;
+	if(strlen($t) < 10)return false;
 	$question = "";
 	$answers = [];
 	$tip = "";
@@ -102,7 +118,7 @@ function ls($dir){
 	return $ls;
 }
 function get($path){
-	@$t = file_get_contents(dirname(__FILE__).$path);
+	@$t = file_get_contents(dirname(__FILE__).$path)."";
 	$t = str_replace("\r", "", $t);
 	$t = mb_convert_encoding($t, "UTF-8", "windows-1251");
 	return $t;

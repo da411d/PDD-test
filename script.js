@@ -42,8 +42,8 @@ var PDTest = {
 				return;
 			}
 			data = JSON.parse(data);
-			for(var i=0; i<data.length; i++){
-				for(var j=0; j<data[i].length; j++){
+			for(var i in data){
+				for(var j in data[i]){
 					data[i][j] = new Question(data[i][j]);
 				}
 			}
@@ -57,8 +57,8 @@ var PDTest = {
 				return;
 			}
 			data = JSON.parse(data);
-			for(var i=0; i<data.length; i++){
-				for(var j=0; j<data[i].length; j++){
+			for(var i in data){
+				for(var j in data[i]){
 					data[i][j] = new Question(data[i][j]);
 				}
 			}
@@ -68,14 +68,11 @@ var PDTest = {
 		connect(DIR+"?_=ab&$=sbj", function(data){
 			if(data == "%404%"){
 				PDTest.currentTest.subjectAB = false;
-				byId("sbj").outerHTML = "";
-				byId("sbjCD").outerHTML = "";
-				byId("top100").style.width = "calc(25% - 8px)";
-				byId("marafon").style.width = "calc(25% - 8px)";
+				byId("sbjs").style.display = "none";
 				return;
 			}
 			data = JSON.parse(data);
-			for(var i=0; i<data.length;i++){
+			for(var i in data){
 				data[i] = {
 					title: data[i][0],
 					list: data[i][1]
@@ -86,10 +83,7 @@ var PDTest = {
 		connect(DIR+"?_=cd&$=sbj", function(data){
 			if(data == "%404%"){
 				PDTest.currentTest.subjectCD = false;
-				byId("sbj").outerHTML = "";
-				byId("sbjCD").outerHTML = "";
-				byId("top100").style.width = "calc(25% - 8px)";
-				byId("marafon").style.width = "calc(25% - 8px)";
+				byId("sbjs").style.display = "none";
 				return;
 			}
 			data = JSON.parse(data);
@@ -115,7 +109,7 @@ var PDTest = {
 		var info = "";
 		switch(mode){
 			case 0: //Екзамен
-				for(var i=0; i < currentTest[0].length; i++){
+				for(var i in currentTest[index]){
 					var index = ~~(Math.random()*currentTest.length);
 					list.push(currentTest[index][i]);
 				}
@@ -129,7 +123,7 @@ var PDTest = {
 				
 			case 2: //Білет по темі
 				var subject = PDTest.currentTest.getSubject()[num].list;
-				for(var i=0; i<subject.length; i++){
+				for(var i in subject){
 					var s = subject[i];
 					let n = s.substr(0, 2)-1;
 					let m = s.substr(2, 2)-1;
@@ -139,15 +133,15 @@ var PDTest = {
 				break;
 				
 			case 3: //Кожне N-те
-				for(var i=0; i < currentTest.length; i++){
+				for(var i in currentTest){
 					list.push(currentTest[i][num-1]);
 				}
 				var info = "Каждый "+num+"-й вопрос";
 				break;
 				
 			case 4: //100 складних
-				for(var i=0; i < currentTest.length; i++){
-					for(var j=0; j < currentTest[i].length; j++){
+				for(var i in currentTest){
+					for(var j in currentTest[i]){
 						if(currentTest[i][j].difficult){
 							list.push(currentTest[i][j]);
 						}
@@ -158,8 +152,8 @@ var PDTest = {
 				break;
 				
 			case 5: //Марафон
-				for(var i=0; i < currentTest.length; i++){
-					for(var j=0; j < currentTest[i].length; j++){
+				for(var i in currentTest){
+					for(var j in currentTest[i]){
 						list.push(currentTest[i][j]);
 					}
 				}
@@ -172,7 +166,7 @@ var PDTest = {
 				if(li.length<4)break;
 				if(li[li.length-1] == ",")li = li.substr(0, li.length-1);
 				li = li.split(",");
-				for(var i=0; i<li.length; i++){
+				for(var i in li){
 					var s = li[i];
 					var abcd = s.substr(0, 2).toUpperCase();
 					list.push( PDTest.currentTest.getQById(s) );
@@ -183,7 +177,7 @@ var PDTest = {
 		
 		var testHTML = "";
 		var testnavHTML = "";
-		for(var i=0; i<list.length; i++){
+		for(var i in list){
 			testHTML += list[i].toHTML(i);
 			testnavHTML += ('<a onclick="trigCard('+(i+1)+')" name="testnav" class="btn select w {ACTIVE}">'+(i+1)+'</a>').replace("{ACTIVE}", i==0 ? "active" : "");
 		}
@@ -279,7 +273,7 @@ var PDTest = {
 	*/
 	listener: function(e){
 		var target = e.target;
-		if(target.id.indexOf("question") == -1)return; //Если не наш человек
+		if(target.id.indexOf("question") == -1)return;
 		
 		var root = target;
 		while(root.id != "question"){
@@ -353,7 +347,7 @@ var PDTest = {
 			
 			var list = PDTest.currentTest.get();
 			byId("num").innerHTML = '<option selected disabled>Билет по номеру</option>';
-			for(l in list){
+			for(var l in list){
 				let i = l-0+1;
 				byId("num").innerHTML += '<option value="'+i+'">'+i+'-й билет</option>';
 			}
