@@ -9,7 +9,7 @@ if($mode == "sbj"){
 	if($id == "ab"){
 		$subject = get("/subject.txt");
 		$subject = explode("\n", $subject);
-		$list = [];
+		$list = array();
 		foreach($subject as $s){
 			if($s){
 				$s = explode("-", $s);
@@ -20,7 +20,7 @@ if($mode == "sbj"){
 	}else{
 		$subject = get("/subjectCD.txt");
 		$subject = explode("\n", $subject);
-		$list = [];
+		$list = array();
 		foreach($subject as $s){
 			if($s){
 				$list[] = $s;
@@ -31,18 +31,18 @@ if($mode == "sbj"){
 	print_r(json_encode($list));
 	die();
 }
-$test = [];
+$test = array();
 $list = ls("{$id}_text");
 $image = ls("{$id}_image");
 $difficult = get("/{$id}_difficult.txt");
 
 if(count($list) < 2)die("%404%");
 
-$images = [];
+$images = array();
 foreach($image as $i){
 	$n = substr($i, 0, 2)-1;
 	$m = substr($i, 2, 2)-1;
-	if(!$test[$n])$test[$n] = [];
+	if(!$test[$n])$test[$n] = array();
 	
 	$images[$n][$m] = "{$id}_image/{$i}";
 }
@@ -53,7 +53,7 @@ foreach($list as $l){
 	}
 	$n = (int)substr($l, 0, 2)-1;
 	$m = (int)substr($l, 2, 2)-1;
-	if(!$test[$n])$test[$n] = [];
+	if(!$test[$n])$test[$n] = array();
 	if($test[$n] === false)continue;
 	
 	$test[$n][$m] = parseTest(
@@ -79,7 +79,7 @@ function parseTest($t, $img="", $id){
 	global $difficult;
 	if(strlen($t) < 10)return false;
 	$question = "";
-	$answers = [];
+	$answers = array();
 	$tip = "";
 	$id = strtoupper(_ID_) . preg_replace("/[^0-9]/", "", $id);
 	$diff = strpos($difficult, preg_replace("/[^0-9]/", "", $id)) !== false;
@@ -96,19 +96,19 @@ function parseTest($t, $img="", $id){
 			$tip .= $line;
 		}
 	}
-	return [
+	return array(
 		"question" => $question,
 		"answers" => $answers,
 		"tip" => $tip,
 		"id" => $id,
 		"image" => $img ? $img : "/blank.jpg",
 		"difficult" => $diff
-	];
+	);
 }
 function ls($dir){
 	if(strlen($dir) < 2)die();
 	@$dh = opendir(dirname(__FILE__)."/{$dir}/");
-	$ls = [];
+	$ls = array();
 	while ($dh && false !== ($f = readdir($dh))) {
 		if($f AND !is_dir($f)){
 			$ls[] = $f;
