@@ -247,16 +247,20 @@ var PDDTest = {
 	/*
 		ADD
 	*/
-	add: function(current, n){
+	add: function(data, n){
 		var currentTest = PDDTest.currentTest.get();
 		if(!currentTest || currentTest.length == 0){
 			return;
 		}
 		var list = [];
+		var current = data.substr(2, 2)-0;
+		var num = data.substr(4, 2)-0;
 		
+		
+		currentTest.splice(current-1, 1);
+		currentTest = shuffle(currentTest);
 		for(var i=0; i < n; i++){
-			var index = ~~(Math.random()*currentTest.length);
-			list.push(currentTest[index][current-1]);
+			list.push(currentTest[i][num-1]);
 		}
 		var testHTML = "";
 		var testnavHTML = "";
@@ -313,7 +317,7 @@ var PDDTest = {
 						PDDTest.stop(false);
 						return;
 					}
-					PDDTest.add(root.getAttribute("data-id").substr(4, 2)-0, 5);
+					PDDTest.add(root.getAttribute("data-id"), 5);
 				}
 			}
 		}
