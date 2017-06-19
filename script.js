@@ -27,12 +27,12 @@ function connect(u, f, p){
 		return f(data);
 	};
 };
-
+//папка, в якій всі питання
 var DIR = "data/";
 
 var PDDTest = {
 	/*
-		INIT: Скачуєм всі тести і список картинок. Формуєм об'єкти тестів.
+		INIT: Скачуєм всі дані. Формуєм об'єкти тестів.
 	*/
 	init: function(){
 		connect(DIR+"?_=ab", function(data){
@@ -183,8 +183,11 @@ var PDDTest = {
 				for(var i=0; i<li.length; i++){
 					var s = li[i];
 					var abcd = s.substr(0, 2).toUpperCase();
-					if(PDDTest.currentTest.getQById(s)){
-						list.push( PDDTest.currentTest.getQById(s) );
+					var m = s.substr(2, 2)-1;
+					var n = s.substr(4, 2)-1;
+					
+					if(PDDTest.currentTest[abcd] && PDDTest.currentTest[abcd][m] && PDDTest.currentTest[abcd][m][n]){
+						list.push( PDDTest.currentTest[abcd][m][n] );
 					}
 				}
 				var info = "Ошибки";
@@ -258,7 +261,7 @@ var PDDTest = {
 	}, 
 	
 	/*
-		ADD
+		ADD - додати n питань до нашого теста
 	*/
 	add: function(data, n){
 		var currentTest = PDDTest.currentTest.get();
@@ -378,30 +381,6 @@ var PDDTest = {
 				var l = list[i];
 				byId("sbj").innerHTML += '<option value="'+i+'">'+l.title+'</option>';
 			}
-		},
-		getQById: function(p1, p2=false, p3=false){
-			if(p3 === false && p2 === false){
-				if(p1.length == 4){
-					p1 = this.current+t;
-				}
-				var a = p1.substr(0, 2).toUpperCase();
-				var b = p1.substr(2, 2)-1;
-				var c = p1.substr(4, 2)-1;
-			}else if(p3 === false){
-				var a = this.current.toUpperCase();
-				var b = p1-1;
-				var c = p2-1;
-			}else{
-				var a = p1;
-				var b = p2-1;
-				var c = p3-1;
-			}
-			try{
-				var r = PDDTest.currentTest[a][b][c];
-			}catch(e){
-				var r = false;//{toHTML:function(){return"";}};
-			}
-			return r;
 		},
 		answers:{
 			true: 0,
@@ -572,6 +551,7 @@ function Question(data = ""){
 	}
 }
 
+//Переключає зв'язані кольором кнопки
 window.addEventListener("click", function(e){
 	var target = e.target;
 	
@@ -583,6 +563,7 @@ window.addEventListener("click", function(e){
 	}
 });
 
+//Переключає картку
 function trigCard(i){
 	document.querySelectorAll("#test #question").forEach(function(e){
 		e.classList.add("hidden");
@@ -590,6 +571,8 @@ function trigCard(i){
 	document.querySelector("#test #question:nth-of-type("+i+")").classList.remove("hidden");
 	updateInfo();
 }
+
+//Оновлює інфу в жовтій панельці
 function updateInfo(hideme = false){
 	var id = document.querySelector("#test #question:not(.hidden)");
 	if(hideme || !id){
