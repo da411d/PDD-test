@@ -114,7 +114,9 @@ var PDDTest = {
 			case 0: //Екзамен
 				for(var i=0; i < currentTest[0].length; i++){
 					var index = ~~(Math.random()*currentTest.length);
-					list.push(currentTest[index][i]);
+					if(currentTest && currentTest[index] && currentTest[index][i]){
+						list.push(currentTest[index][i]);
+					}
 				}
 				var info = "Екзамен";
 				break;
@@ -130,7 +132,9 @@ var PDDTest = {
 					var s = subject[i];
 					let n = s.substr(0, 2)-1;
 					let m = s.substr(2, 2)-1;
-					list.push( PDDTest.currentTest.get()[n][m] );
+					if(currentTest && currentTest[n] && currentTest[n][m]){
+						list.push( PDDTest.currentTest.get()[n][m] );
+					}
 				}
 				var info = PDDTest.currentTest.getSubject()[num].title;
 				list = shuffle(list);
@@ -138,7 +142,9 @@ var PDDTest = {
 				
 			case 3: //Кожне N-те
 				for(var i=0; i < currentTest.length; i++){
-					list.push(currentTest[i][num-1]);
+					if(currentTest && currentTest[i] && currentTest[i][num-1]){
+						list.push(currentTest[i][num-1]);
+					}
 				}
 				var info = "Каждый "+num+"-й вопрос";
 				break;
@@ -146,8 +152,10 @@ var PDDTest = {
 			case 4: //100 складних
 				for(var i=0; i < currentTest.length; i++){
 					for(var j=0; j < currentTest[i].length; j++){
-						if(currentTest[i][j].difficult){
-							list.push(currentTest[i][j]);
+						if(currentTest && currentTest[i] && currentTest[i][j]){
+							if(currentTest[i][j].difficult){
+								list.push(currentTest[i][j]);
+							}
 						}
 					}
 				}
@@ -158,7 +166,9 @@ var PDDTest = {
 			case 5: //Марафон
 				for(var i=0; i < currentTest.length; i++){
 					for(var j=0; j < currentTest[i].length; j++){
-						list.push(currentTest[i][j]);
+						if(currentTest && currentTest[i] && currentTest[i][j]){
+							list.push(currentTest[i][j]);
+						}
 					}
 				}
 				var info = "Марафон";
@@ -173,7 +183,9 @@ var PDDTest = {
 				for(var i=0; i<li.length; i++){
 					var s = li[i];
 					var abcd = s.substr(0, 2).toUpperCase();
-					list.push( PDDTest.currentTest.getQById(s) );
+					if(PDDTest.currentTest.getQById(s)){
+						list.push( PDDTest.currentTest.getQById(s) );
+					}
 				}
 				var info = "Ошибки";
 				break;
@@ -387,7 +399,7 @@ var PDDTest = {
 			try{
 				var r = PDDTest.currentTest[a][b][c];
 			}catch(e){
-				var r = {toHTML:function(){return"";}};
+				var r = false;//{toHTML:function(){return"";}};
 			}
 			return r;
 		},
