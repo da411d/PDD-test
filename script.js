@@ -127,6 +127,7 @@ var PDDTest = {
 				break;
 				
 			case 2: //Білет по темі
+				if(PDDTest.currentTest.current == "CD")num = 0;
 				var subject = PDDTest.currentTest.getSubject()[num].list;
 				for(var i=0; i<subject.length; i++){
 					var s = subject[i];
