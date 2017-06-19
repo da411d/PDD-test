@@ -133,6 +133,7 @@ var PDDTest = {
 					list.push( PDDTest.currentTest.get()[n][m] );
 				}
 				var info = PDDTest.currentTest.getSubject()[num].title;
+				list = shuffle(list);
 				break;
 				
 			case 3: //Кожне N-те
