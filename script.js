@@ -178,11 +178,9 @@ var PDDTest = {
 				
 			case 6: //Помилки
 				var li = localStorage.getItem("PDDTest.mistakes")||"";
-				if(li.length<4)break;
-				if(li[li.length-1] == ",")li = li.substr(0, li.length-1);
-				li = li.split(",");
-				for(var i=0; i<li.length; i++){
-					var s = li[i];
+				var count = li.length / 6;
+				for(var i=0; i<count; i++){
+					var s = li.substr(i*6, 6);
 					var abcd = s.substr(0, 2).toUpperCase();
 					var m = s.substr(2, 2)-1;
 					var n = s.substr(4, 2)-1;
@@ -243,13 +241,20 @@ var PDDTest = {
 		
 		var tpl = "";
 		if( good && PDDTest.currentTest.answers.false == 0){
-			tpl = [
-				"<h1>Поздравляем!</h1>",
-				"Экзамен на категорию "+PDDTest.currentTest.current+" сдан без ошибок!"
-			].join("");
+			if(PDDTest.currentTest.mode == 0){
+				tpl = [
+					"<h1>Поздравляем!</h1>",
+					"Экзамен на категорию "+PDDTest.currentTest.current+" сдан без ошибок!"
+				].join("");
+			}else{
+				tpl = [
+					"<h1>Поздравляем!</h1>",
+					"Тест сдан без ошибок!"
+				].join("");
+			}
 		}else if(!good){
 			tpl = [
-				"<h1>К сожалению, экзамен не сдан</h1>",
+				"<h1>К сожалению, тест не сдан</h1>",
 				"Предлагаем Вам потренироваться на решении \"Билетов\" в одной из следующих вкладок или подучить Правила на этом сайте"
 			].join("");
 		}else{
@@ -274,10 +279,14 @@ var PDDTest = {
 		var num = data.substr(4, 2)-0;
 		
 		
-		currentTest.splice(current-1, 1);
-		currentTest = shuffle(currentTest);
+		for(var i=0; i<currentTest.length; i++){
+			if(currentTest[i][num-1].id.substr(2, 2)-0 == current-0){
+				currentTest.splice(i, 1);
+			}
+		}
+		list = shuffle(currentTest).splice(0, n);
 		for(var i=0; i < n; i++){
-			list.push(currentTest[i][num-1]);
+			list[i] = list[i][num-1];
 		}
 		var testHTML = "";
 		var testnavHTML = "";
@@ -316,17 +325,19 @@ var PDDTest = {
 			document.querySelector("#testnav .btn:nth-child("+root.getAttribute("data-n")+")").className += status ? " g" : " r";
 			
 			var n = root.getAttribute("data-n")-0+1;
-			if(n > PDDTest.currentTest.answers.max || PDDTest.currentTest.answers.finished)return;
-			trigCard(n);
-			document.querySelectorAll("#testnav .btn").forEach(function(e){
-				e.classList.remove("active");
-			});
-			document.querySelector("#testnav .btn:nth-child("+n+")").classList.add("active");
+			if(n <= PDDTest.currentTest.answers.max && !PDDTest.currentTest.answers.finished){
+				trigCard(n);
+				document.querySelectorAll("#testnav .btn").forEach(function(e){
+					e.classList.remove("active");
+				});
+				document.querySelector("#testnav .btn:nth-child("+n+")").classList.add("active");
+			}
 			
 			if(status){
 				PDDTest.stats.tryRemoveMistake(root.getAttribute("data-id"));
 								
 			}else{
+				
 				PDDTest.stats.addMistake(root.getAttribute("data-id"));
 				if(PDDTest.currentTest.mode == 0){
 					if(root.getAttribute("data-exam") == "true" || PDDTest.currentTest.answers.false >= 3){
@@ -442,6 +453,13 @@ var PDDTest = {
 			
 			if(n == 1){
 				this.true++;
+				
+			}else if(n == -1){
+				
+				this.false--;
+				this.total--;
+				this.total--;
+				
 			}else{
 				this.false++;
 			}
@@ -477,21 +495,19 @@ var PDDTest = {
 		addMistake: function(t){
 			var data = localStorage.getItem("PDDTest.mistakes") || "";
 			if(data.indexOf(t) == -1){
-				data = data.split(",");
-				data.push(t);
-				data = data.join(",");
-				if(data[0] == ",")data = data.substr(1);
+				data += t;
 				localStorage.setItem("PDDTest.mistakes", data);
+			}else{
+				PDDTest.stats.add(-1);
 			}
 		},
 		tryRemoveMistake: function(t){
 			var data = localStorage.getItem("PDDTest.mistakes") || "";
 			if(data.indexOf(t) > -1){
 				data = data.split(t).join("");
-				data = data.split(",,").join(",");
-				if(data[0] == ",")data = data.substr(1);
-				localStorage.setItem("PDDTest.mistakes", data);
+				PDDTest.stats.add(-1);
 			}
+			localStorage.setItem("PDDTest.mistakes", data);
 		}
 	}
 };

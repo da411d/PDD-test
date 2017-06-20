@@ -1,3 +1,7 @@
+li#question_answer[data-true] {
+	outline: 2px solid;
+}
+
 #PDDTest{
 	font-family: Arial, Sans-serif;
 	margin:0px;
