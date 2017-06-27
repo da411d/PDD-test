@@ -177,10 +177,9 @@ var PDDTest = {
 				break;
 				
 			case 6: //Помилки
-				var li = localStorage.getItem("PDDTest.mistakes")||"";
-				var count = li.length / 6;
-				for(var i=0; i<count; i++){
-					var s = li.substr(i*6, 6);
+				var mymistakes = localStorage.getItem("PDDTest.mistakes")||"";
+				for(var i=0; i < mymistakes.length; i+=6){
+					var s = mymistakes.substr(i, 6);
 					var abcd = s.substr(0, 2).toUpperCase();
 					var m = s.substr(2, 2)-1;
 					var n = s.substr(4, 2)-1;
@@ -303,12 +302,13 @@ var PDDTest = {
 		var num = data.substr(4, 2)-0;
 		
 		
-		for(var i=0; i<currentTest.length; i++){
-			if(currentTest[i][num-1].id.substr(2, 2)-0 == current-0){
-				currentTest.splice(i, 1);
+		list = currentTest;
+		for(var i=0; i<list.length; i++){
+			if(list[i][num-1].id.substr(2, 2)-0 == current-0){
+				list.splice(i, 1);
 			}
 		}
-		list = shuffle(currentTest).splice(0, n);
+		list = shuffle(list).splice(0, n);
 		for(var i=0; i < n; i++){
 			list[i] = list[i][num-1];
 		}
