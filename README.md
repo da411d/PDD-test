@@ -2,7 +2,7 @@
 [![Donations Badge](https://yourdonation.rocks/images/badge.svg)](https://daki.me/sayThanks)
 
 # PDD-test
-Скрипт для тестування правил дорожнього руху.
+Скрипт для тестування правил дорожнього руху. Демку можня глянути тут: https://by.daki.me/PDDTest/
 
 **УВАГА**\
 Розробка припинена давно, глюки які є - залишаться тут назавжди.
